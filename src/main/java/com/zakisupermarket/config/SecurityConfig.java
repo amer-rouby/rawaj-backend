@@ -73,7 +73,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/stock/**").permitAll()
                         .requestMatchers("/api/sales/**").permitAll()
                         .requestMatchers("/api/dashboard/**").permitAll()
-                        .anyRequest().authenticated()
+                        // Everything under /api/** not already listed above keeps requiring
+                        // authentication at the URL level, exactly as before this rule existed.
+                        .requestMatchers("/api/**").authenticated()
+                        // Anything else is the bundled Angular frontend (SpaWebConfig) when this
+                        // app serves it from the same origin - static JS/CSS plus arbitrary
+                        // client-side route paths (/dashboard, /settings/*, ...) that carry no
+                        // server secret of their own. Real access control still happens per
+                        // /api/** call above (JWT + SecurityUtils/@PreAuthorize) exactly like the
+                        // /api/products/** etc. rows above already rely on - this permitAll only
+                        // lets the page shell load, it grants no data access by itself.
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
