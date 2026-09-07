@@ -35,3 +35,9 @@ build/
 ### Runtime data (generated locally, not source) ###
 uploads/
 backups/
+
+### Bundled frontend build (copied in at package time for a single-process
+### deployment, e.g. an offline single-machine install - never source, always
+### regenerated from the frontend repo's own `ng build`) ###
+src/main/resources/static/*
+!src/main/resources/static/.gitkeep
