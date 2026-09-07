@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
@@ -38,6 +39,14 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Slf4j
 public class LicenseServiceImpl implements LicenseService {
+
+    // Deliberately generous (not a few minutes): a brief forward clock glitch
+    // followed by a legitimate correction back to the real time (NTP resync,
+    // timezone mix-up, a user fixing a fat-fingered date) must never look like
+    // tampering and lock out a paying customer - subscriptions are monthly, so
+    // the realistic bypass attempt this guards against is rolling back weeks,
+    // not minutes.
+    private static final Duration CLOCK_ROLLBACK_TOLERANCE = Duration.ofHours(24);
 
     private final LicenseStateRepository repository;
     private final StoreRepository storeRepository;
@@ -62,17 +71,34 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public LicenseStatusResponse getStatus(Long storeId) {
-        return repository.findByStoreId(storeId)
-                .map(state -> LicenseStatusResponse.builder()
-                        .expired(Instant.now().isAfter(state.getExpiresAt()))
-                        .expiresAt(state.getExpiresAt())
-                        .build())
-                // No row yet = never licensed = unlimited, not locked. Keeps this
-                // feature from retroactively locking out any existing store the
-                // moment it ships, until you deliberately send that store a code.
-                .orElseGet(() -> LicenseStatusResponse.builder().expired(false).expiresAt(null).build());
+        LicenseState state = repository.findByStoreId(storeId).orElse(null);
+        if (state == null) {
+            // No row yet = never licensed = unlimited, not locked. Keeps this
+            // feature from retroactively locking out any existing store the
+            // moment it ships, until you deliberately send that store a code.
+            return LicenseStatusResponse.builder().expired(false).expiresAt(null).build();
+        }
+
+        Instant now = Instant.now();
+
+        // The system clock was rolled back behind where we've already seen it -
+        // treat as locked no matter what expiresAt says, otherwise a customer
+        // could "un-expire" a lapsed subscription just by changing their PC's
+        // date. lastSeenAt only ever advances (never reset backward), including
+        // while a rollback is in progress, so a repeated attempt is still
+        // caught against the same real reference point.
+        boolean clockRolledBack = state.getLastSeenAt() != null
+                && now.isBefore(state.getLastSeenAt().minus(CLOCK_ROLLBACK_TOLERANCE));
+
+        if (!clockRolledBack && (state.getLastSeenAt() == null || now.isAfter(state.getLastSeenAt()))) {
+            state.setLastSeenAt(now);
+            repository.save(state);
+        }
+
+        boolean expired = clockRolledBack || now.isAfter(state.getExpiresAt());
+        return LicenseStatusResponse.builder().expired(expired).expiresAt(state.getExpiresAt()).build();
     }
 
     @Override
@@ -105,6 +131,9 @@ public class LicenseServiceImpl implements LicenseService {
             return LicenseState.builder().store(store).build();
         });
         state.setExpiresAt(expiration.toInstant());
+        // A real renewal is a legitimate reference point - reset the watermark
+        // to now so a rollback attempted before this renewal doesn't linger.
+        state.setLastSeenAt(Instant.now());
         repository.save(state);
 
         log.info("License renewed for storeId {} - new expiry {}", storeId, expiration);

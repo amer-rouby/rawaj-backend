@@ -33,6 +33,13 @@ public class LicenseState {
     @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
 
+    // Watermark that only ever moves forward (see LicenseServiceImpl.getStatus) -
+    // if the system clock is ever seen behind this, the store is treated as
+    // locked regardless of expiresAt, so rolling the clock back to before a
+    // real expiry date can't bring an expired license back to "valid".
+    @Column(name = "last_seen_at")
+    private Instant lastSeenAt;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
