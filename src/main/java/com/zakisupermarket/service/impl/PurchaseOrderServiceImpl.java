@@ -8,6 +8,7 @@ import com.zakisupermarket.dto.response.SendEmailResponse;
 import com.zakisupermarket.dto.response.SendWhatsAppResponse;
 import com.zakisupermarket.dto.response.WhatsAppMessageResponse;
 import com.zakisupermarket.entity.*;
+import com.zakisupermarket.exception.FeatureDisabledException;
 import com.zakisupermarket.exception.LocalizedException;
 import com.zakisupermarket.exception.ResourceNotFoundException;
 import com.zakisupermarket.repository.*;
@@ -15,6 +16,7 @@ import com.zakisupermarket.service.EmailService;
 import com.zakisupermarket.service.PurchaseOrderPdfService;
 import com.zakisupermarket.service.PurchaseOrderService;
 import com.zakisupermarket.service.StockMovementService;
+import com.zakisupermarket.service.settings.ZakiFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -46,6 +48,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private final StockMovementService stockMovementService;
     private final EmailService emailService;
     private final PurchaseOrderPdfService purchaseOrderPdfService;
+    private final ZakiFeatureSettingsService zakiFeatureSettingsService;
 
     @Override
     @Transactional(readOnly = true)
@@ -551,6 +554,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Transactional(readOnly = true)
     public SendEmailResponse sendPurchaseOrderEmail(Long orderId, Long storeId) {
         log.info("Sending purchase order email for orderId: {}, storeId: {}", orderId, storeId);
+        checkEmailEnabled(storeId);
 
         PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(orderId, storeId)
                 .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found with id: " + orderId));
@@ -582,6 +586,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 .recipientEmail(email)
                 .message("Email sent successfully")
                 .build();
+    }
+
+    private void checkEmailEnabled(Long storeId) {
+        Boolean enabled = zakiFeatureSettingsService.getOrCreate(storeId).getEmailEnabled();
+        if (enabled != null && !enabled) {
+            throw new FeatureDisabledException("FEATURE_DISABLED_EMAIL", "Email sending is disabled for this store");
+        }
     }
 
     // The detailed order content now lives in the attached PDF (PurchaseOrderPdfService) -

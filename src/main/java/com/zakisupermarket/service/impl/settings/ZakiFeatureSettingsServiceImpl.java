@@ -70,6 +70,9 @@ public class ZakiFeatureSettingsServiceImpl implements ZakiFeatureSettingsServic
         if (request.getOfflineModeEnabled() != null) {
             settings.setOfflineModeEnabled(request.getOfflineModeEnabled());
         }
+        if (request.getEmailEnabled() != null) {
+            settings.setEmailEnabled(request.getEmailEnabled());
+        }
 
         ZakiFeatureSettings saved = settingsRepository.save(settings);
         log.info("Zaki feature settings updated for storeId: {}", storeId);

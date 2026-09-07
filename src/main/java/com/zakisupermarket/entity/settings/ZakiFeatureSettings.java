@@ -72,6 +72,11 @@ public class ZakiFeatureSettings {
     @Builder.Default
     private Boolean offlineModeEnabled = false;
 
+    // Off by default - not functional until real SMTP credentials (MAIL_USERNAME/
+    // MAIL_PASSWORD) are configured, same rationale as eInvoiceEnabled above.
+    @Builder.Default
+    private Boolean emailEnabled = false;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

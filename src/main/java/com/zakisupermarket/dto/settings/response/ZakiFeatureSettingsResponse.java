@@ -36,6 +36,7 @@ public class ZakiFeatureSettingsResponse {
     private Boolean eInvoiceEnabled;
 
     private Boolean offlineModeEnabled;
+    private Boolean emailEnabled;
     private LocalDateTime updatedAt;
 
     public static ZakiFeatureSettingsResponse fromEntity(ZakiFeatureSettings settings) {
@@ -55,6 +56,7 @@ public class ZakiFeatureSettingsResponse {
                 .aiAssistantEnabled(settings.getAiAssistantEnabled())
                 .eInvoiceEnabled(settings.getEInvoiceEnabled())
                 .offlineModeEnabled(settings.getOfflineModeEnabled())
+                .emailEnabled(settings.getEmailEnabled())
                 .updatedAt(settings.getUpdatedAt())
                 .build();
     }

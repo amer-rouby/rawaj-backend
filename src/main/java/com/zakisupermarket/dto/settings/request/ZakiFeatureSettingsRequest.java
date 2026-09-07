@@ -28,4 +28,5 @@ public class ZakiFeatureSettingsRequest {
     private Boolean eInvoiceEnabled;
 
     private Boolean offlineModeEnabled;
+    private Boolean emailEnabled;
 }

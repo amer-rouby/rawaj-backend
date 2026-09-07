@@ -1,5 +1,6 @@
 package com.zakisupermarket.service.impl;
 
+import com.zakisupermarket.exception.FeatureNetworkUnavailableException;
 import com.zakisupermarket.exception.LocalizedException;
 import com.zakisupermarket.service.EmailService;
 import jakarta.mail.internet.MimeMessage;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -43,9 +45,17 @@ public class EmailServiceImpl implements EmailService {
         try {
             mailSender.send(message);
             log.info("Email sent to {} - subject: {}", to, subject);
+        } catch (MailAuthenticationException e) {
+            // Bad SMTP credentials, not a connectivity problem - don't tell an
+            // admin "check your internet" when the real issue is a wrong password.
+            log.error("Mail server rejected credentials sending to {}: {}", to, e.getMessage());
+            throw new LocalizedException(HttpStatus.BAD_GATEWAY, "EMAIL_SEND_FAILED", "Failed to send email: " + e.getMessage(), e);
         } catch (MailException e) {
-            log.error("Failed to send email to {}: {}", to, e.getMessage());
-            throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
+            // Anything else (connection refused/timeout/unreachable host) is the
+            // "no internet" case.
+            log.error("Could not reach mail server sending to {}: {}", to, e.getMessage());
+            throw new FeatureNetworkUnavailableException("FEATURE_NETWORK_UNAVAILABLE_EMAIL",
+                    "Could not reach the mail server - check the store's internet connection", e);
         }
     }
 
@@ -68,9 +78,13 @@ public class EmailServiceImpl implements EmailService {
 
             mailSender.send(message);
             log.info("Email with attachment sent to {} - subject: {}", to, subject);
+        } catch (MailAuthenticationException e) {
+            log.error("Mail server rejected credentials sending attachment to {}: {}", to, e.getMessage());
+            throw new LocalizedException(HttpStatus.BAD_GATEWAY, "EMAIL_SEND_FAILED", "Failed to send email: " + e.getMessage(), e);
         } catch (jakarta.mail.MessagingException | MailException e) {
-            log.error("Failed to send email with attachment to {}: {}", to, e.getMessage());
-            throw new RuntimeException("Failed to send email: " + e.getMessage(), e);
+            log.error("Could not reach mail server sending attachment to {}: {}", to, e.getMessage());
+            throw new FeatureNetworkUnavailableException("FEATURE_NETWORK_UNAVAILABLE_EMAIL",
+                    "Could not reach the mail server - check the store's internet connection", e);
         }
     }
 }
