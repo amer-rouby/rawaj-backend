@@ -169,10 +169,14 @@ public class DashboardServiceImpl implements DashboardService {
                             .map(batch -> BigDecimal.valueOf(batch.getQuantityCurrent()))
                             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                    BigDecimal sellPrice = product.getSellPrice() != null
-                            ? product.getSellPrice() : BigDecimal.ZERO;
+                    // Inventory value is an asset valuation (what was PAID for the stock
+                    // on hand), not potential revenue - buyPrice, not sellPrice. Using
+                    // sellPrice here silently folded unrealized profit margin into what's
+                    // supposed to be a cost figure, inflating it above the true value.
+                    BigDecimal buyPrice = product.getBuyPrice() != null
+                            ? product.getBuyPrice() : BigDecimal.ZERO;
 
-                    return totalStock.multiply(sellPrice);
+                    return totalStock.multiply(buyPrice);
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }

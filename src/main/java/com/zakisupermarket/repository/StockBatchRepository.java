@@ -105,7 +105,7 @@ public interface StockBatchRepository extends JpaRepository<StockBatch, Long> {
     Long countExpiredBatches(@Param("storeId") Long storeId);
 
     @Query("""
-        SELECT COALESCE(SUM(sb.quantityCurrent * p.sellPrice), 0)
+        SELECT COALESCE(SUM(sb.quantityCurrent * p.buyPrice), 0)
         FROM StockBatch sb
         JOIN Product p ON sb.product.id = p.id
         WHERE sb.store.id = :storeId
@@ -114,7 +114,7 @@ public interface StockBatchRepository extends JpaRepository<StockBatch, Long> {
     BigDecimal getTotalStockValue(@Param("storeId") Long storeId);
 
     @Query("""
-        SELECT p.category, COUNT(DISTINCT p.id), COALESCE(SUM(sb.quantityCurrent * p.sellPrice), 0)
+        SELECT p.category, COUNT(DISTINCT p.id), COALESCE(SUM(sb.quantityCurrent * p.buyPrice), 0)
         FROM StockBatch sb
         JOIN Product p ON sb.product.id = p.id
         WHERE sb.store.id = :storeId

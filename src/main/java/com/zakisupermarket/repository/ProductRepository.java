@@ -101,7 +101,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         SELECT p.id, p.name, p.category, 
                COALESCE(SUM(sb.quantityCurrent), 0),
                p.minStockLevel, p.sellPrice,
-               COALESCE(SUM(sb.quantityCurrent * p.sellPrice), 0)
+               COALESCE(SUM(sb.quantityCurrent * p.buyPrice), 0)
         FROM Product p
         LEFT JOIN StockBatch sb ON p.id = sb.product.id AND sb.status = 'ACTIVE'
         WHERE p.store.id = :storeId
@@ -110,7 +110,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Object[]> getStockWithCategories(@Param("storeId") Long storeId);
 
     @Query("""
-        SELECT COALESCE(SUM(sb.quantityCurrent * p.sellPrice), 0)
+        SELECT COALESCE(SUM(sb.quantityCurrent * p.buyPrice), 0)
         FROM Product p
         LEFT JOIN StockBatch sb ON p.id = sb.product.id AND sb.status = 'ACTIVE'
         WHERE p.store.id = :storeId
