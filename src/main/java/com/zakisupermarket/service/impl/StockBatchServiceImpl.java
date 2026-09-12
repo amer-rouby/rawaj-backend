@@ -120,13 +120,20 @@ public class StockBatchServiceImpl implements StockBatchService {
             }
         }
 
+        // These products don't expire in this variant - default to a
+        // far-future placeholder rather than forcing the caller to invent one,
+        // same reasoning as ProductServiceImpl's initial-stock-at-creation path.
+        LocalDate expiryDate = request.getExpiryDate() != null
+                ? request.getExpiryDate()
+                : LocalDate.now().plusYears(50);
+
         StockBatch batch = StockBatch.builder()
                 .product(product)
                 .store(store)
                 .batchNumber(request.getBatchNumber())
                 .quantityCurrent(request.getQuantityInitial())
                 .quantityInitial(request.getQuantityInitial())
-                .expiryDate(request.getExpiryDate())
+                .expiryDate(expiryDate)
                 .productionDate(request.getProductionDate())
                 .buyPrice(buyPrice)
                 .sellPrice(sellPrice)

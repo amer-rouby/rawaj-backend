@@ -19,7 +19,9 @@ public class StockBatchRequest {
 
     private Integer quantityCurrent;
 
-    @NotNull
+    // Optional in this variant - StockBatchServiceImpl fills a far-future
+    // default when omitted, matching how ProductServiceImpl already handles
+    // the initial-stock-at-creation-time case.
     private LocalDate expiryDate;
 
     private LocalDate productionDate;
