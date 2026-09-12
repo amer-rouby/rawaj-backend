@@ -72,7 +72,7 @@ A `dev` Spring profile (`-Dspring-boot.run.profiles=dev`) exists with fallback d
 
 ## ⚠️ Known carry-over from the SmartPharma fork
 
-Some naming still reflects the pharmacy origin and hasn't been renamed, since it doesn't affect supermarket behavior: the `PHARMACIST` role is the de facto cashier/staff role, and a handful of internal identifiers/log messages still say "SmartPharma" or "pharmacy" in places that were never business-critical to rename.
+The `PHARMACIST` role was renamed to `CASHIER` since it's the de facto cashier/staff role shared by every business type this app runs (supermarket, computer/mobile shop, etc.) - not specific to pharmacies. A handful of internal identifiers/log messages still say "SmartPharma" or "pharmacy" in places that were never business-critical to rename.
 
 ## 🔗 Related Repositories
 

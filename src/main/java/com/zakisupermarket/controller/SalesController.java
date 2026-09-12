@@ -30,7 +30,7 @@ public class SalesController {
     private final SaleTransactionService saleTransactionService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> getAllSales(
             @RequestParam Long storeId,
             @RequestParam(defaultValue = "0") int page,
@@ -53,7 +53,7 @@ public class SalesController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> getSale(
             @PathVariable Long id,
             @RequestParam Long storeId) {
@@ -64,7 +64,7 @@ public class SalesController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> createSale(
             @Valid @RequestBody SaleRequest request,
             @RequestParam Long storeId,
@@ -104,7 +104,7 @@ public class SalesController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> updateSale(
             @PathVariable Long id,
             @Valid @RequestBody SaleRequest request,
@@ -127,7 +127,7 @@ public class SalesController {
     }
 
     @GetMapping("/analytics")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<SalesReportResponse>> getSalesAnalytics(
             @RequestParam Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -142,7 +142,7 @@ public class SalesController {
     }
 
     @GetMapping("/stats")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSalesStats(@RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/stats - storeId: {}", storeId);
@@ -152,7 +152,7 @@ public class SalesController {
     }
 
     @GetMapping("/today")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySales(@RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/today - storeId: {}", storeId);
@@ -162,7 +162,7 @@ public class SalesController {
     }
 
     @GetMapping("/today/summary")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySalesSummary(@RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/today/summary - storeId: {}", storeId);
@@ -172,7 +172,7 @@ public class SalesController {
     }
 
     @GetMapping("/range")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> getSalesByDateRange(
             @RequestParam Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -187,7 +187,7 @@ public class SalesController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> searchSales(
             @RequestParam Long storeId,
             @RequestParam String query) {
@@ -200,7 +200,7 @@ public class SalesController {
     }
 
     @GetMapping("/recent")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<List<SaleTransactionDTO>>> getRecentSales(
             @RequestParam Long storeId,
             @RequestParam(defaultValue = "10") int limit) {
@@ -213,7 +213,7 @@ public class SalesController {
     }
 
     @GetMapping("/by-category")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSalesByCategory(
             @RequestParam Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -228,7 +228,7 @@ public class SalesController {
     }
 
     @GetMapping("/top-products")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getTopProducts(
             @RequestParam Long storeId,
             @RequestParam(defaultValue = "10") int limit) {

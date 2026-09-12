@@ -31,7 +31,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts(
             @RequestParam Long storeId) {
 
@@ -54,7 +54,7 @@ public class ProductController {
      * scan, so that endpoint's behavior must not change.
      */
     @GetMapping("/page")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<Page<ProductResponse>>> getProductsPage(
             @RequestParam Long storeId,
             @RequestParam(defaultValue = "0") int page,
@@ -75,7 +75,7 @@ public class ProductController {
     }
 
     @GetMapping("/count")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getProductsCount(
             @RequestParam Long storeId) {
 
@@ -94,7 +94,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<ProductResponse>> getProduct(
             @PathVariable Long id,
             @RequestParam Long storeId) {
@@ -110,7 +110,7 @@ public class ProductController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<ProductResponse>> createProduct(
             @Valid @RequestBody ProductRequest request,
             @RequestParam Long storeId) {
@@ -127,7 +127,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequest request,
@@ -160,7 +160,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> searchProducts(
             @RequestParam Long storeId,
             @RequestParam String query) {
@@ -176,7 +176,7 @@ public class ProductController {
     }
 
     @GetMapping("/low-stock")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getLowStockProducts(
             @RequestParam Long storeId) {
 
@@ -191,7 +191,7 @@ public class ProductController {
     }
 
     @PostMapping("/calculate-sell-price")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> calculateSellPrice(
             @RequestParam BigDecimal buyPrice,
             @RequestParam(defaultValue = "25") int profitMarginPercent) {

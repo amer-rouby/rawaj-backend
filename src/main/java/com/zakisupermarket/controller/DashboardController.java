@@ -23,7 +23,7 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping("/stats")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<DashboardResponse>> getDashboardStats(
             @RequestParam Long storeId) {
 
@@ -40,7 +40,7 @@ public class DashboardController {
     }
 
     @GetMapping("/zaki-insights")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<ZakiInsightsDTO>> getZakiInsights() {
         Long storeId = SecurityUtils.getCurrentStoreId();
         try {

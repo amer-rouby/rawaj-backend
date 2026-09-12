@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'PHARMACIST')")
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'CASHIER')")
 public class ReportController {
 
     private final ReportService reportService;

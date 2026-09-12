@@ -25,7 +25,7 @@ public class StoreSettingsController {
     // just the settings screen itself, so any authenticated role can read it. Only
     // updateStoreSettings() below is the sensitive operation and stays ADMIN-only.
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'MANAGER', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER', 'VIEWER')")
     public ResponseEntity<ApiResponse<StoreSettingsResponse>> getStoreSettings(
             @RequestParam Long storeId) {
 
