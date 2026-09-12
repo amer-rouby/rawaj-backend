@@ -86,7 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (request.getStoreName() != null && !request.getStoreName().isBlank()) {
             roleName = "ADMIN";
         } else {
-            roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "PHARMACIST";
+            roleName = (request.getRole() != null && !request.getRole().isBlank()) ? request.getRole() : "CASHIER";
         }
 
         User user = User.builder()

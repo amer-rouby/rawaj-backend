@@ -72,7 +72,7 @@ public class User implements UserDetails {
     private Gender gender;
 
     @Enumerated(EnumType.STRING) @Column(nullable = false, length = 20)
-    private UserRole role = UserRole.PHARMACIST;
+    private UserRole role = UserRole.CASHIER;
 
     @Column(nullable = false)
     private Boolean isActive = true;
@@ -109,6 +109,6 @@ public class User implements UserDetails {
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return isActive != null && isActive; }
 
-    public enum UserRole { ADMIN, PHARMACIST, MANAGER, VIEWER }
+    public enum UserRole { ADMIN, CASHIER, MANAGER, VIEWER }
     public enum Gender { MALE, FEMALE, OTHER }
 }

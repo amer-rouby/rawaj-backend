@@ -60,17 +60,17 @@ public class DataInitializer {
 
             userRepository.save(admin);
 
-            User pharmacist = User.builder()
+            User cashier = User.builder()
                     .store(store)
-                    .username("pharmacist")
-                    .password(passwordEncoder.encode("pharm123"))
+                    .username("cashier")
+                    .password(passwordEncoder.encode("cash123"))
                     .fullName("Mohamed Ali")
                     .phone("01098765432")
-                    .role(User.UserRole.PHARMACIST)
+                    .role(User.UserRole.CASHIER)
                     .isActive(true)
                     .build();
 
-            userRepository.save(pharmacist);
+            userRepository.save(cashier);
             String[][] productsData = {
                     {"Full Cream Milk 1L", "1234567890123", "Dairy", "BOTTLE"},
                     {"White Bread", "1234567890124", "Bakery", "PIECE"},

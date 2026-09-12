@@ -70,7 +70,7 @@ public class PurchaseOrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> createOrder(
             @Valid @RequestBody PurchaseOrderRequest request,
             @RequestParam Long storeId,
@@ -83,7 +83,7 @@ public class PurchaseOrderController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> updateOrder(
             @PathVariable Long id,
             @Valid @RequestBody PurchaseOrderRequest request,
@@ -123,7 +123,7 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/{id}/cancel")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> cancelOrder(
             @PathVariable Long id,
             @RequestParam Long storeId,
@@ -136,7 +136,7 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/{id}/receive")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> receiveOrder(
             @PathVariable Long id,
             @RequestParam Long storeId,

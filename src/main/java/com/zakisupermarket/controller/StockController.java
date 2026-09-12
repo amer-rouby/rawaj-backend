@@ -56,7 +56,7 @@ public class StockController {
     }
 
     @PostMapping("/batches")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<StockBatchResponse>> createBatch(
             @Valid @RequestBody StockBatchRequest request,
             @RequestParam Long storeId,
@@ -73,7 +73,7 @@ public class StockController {
     }
 
     @PutMapping("/batches/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<StockBatchResponse>> updateBatch(
             @PathVariable Long id,
             @Valid @RequestBody StockBatchRequest request,
@@ -133,7 +133,7 @@ public class StockController {
     }
 
     @PostMapping("/batches/{id}/adjust")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<StockBatchResponse>> adjustStock(
             @PathVariable Long id,
             @Valid @RequestBody StockAdjustmentRequest request,

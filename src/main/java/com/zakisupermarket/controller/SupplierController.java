@@ -61,7 +61,7 @@ public class SupplierController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SupplierResponse>> createSupplier(
             @Valid @RequestBody SupplierRequest request,
             @RequestParam Long storeId,
@@ -74,7 +74,7 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SupplierResponse>> updateSupplier(
             @PathVariable Long id,
             @Valid @RequestBody SupplierRequest request,

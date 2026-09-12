@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/reports/export")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'PHARMACIST')")
+@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'CASHIER')")
 public class ReportExportController {
 
     private final ReportExportService exportService;

@@ -53,7 +53,7 @@ public class PaymentController {
     }
 
     @PostMapping("/{reference}/refund")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PaymentResponse>> refundPayment(
             @PathVariable String reference,
             @RequestParam BigDecimal amount,
@@ -70,7 +70,7 @@ public class PaymentController {
     }
 
     @PostMapping("/{reference}/cancel")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PaymentResponse>> cancelPayment(
             @PathVariable String reference) {
 

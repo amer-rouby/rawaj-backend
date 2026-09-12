@@ -36,7 +36,7 @@ public class DemandPredictionController {
     private final DemandPredictionService predictionService;
 
     @PostMapping("/generate")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<Void>> generatePredictions(
             @RequestParam Long storeId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate forDate,
@@ -110,7 +110,7 @@ public class DemandPredictionController {
     }
 
     @PutMapping("/{id}/actual")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<Void>> updateActualQuantity(
             @PathVariable Long id,
             @RequestParam Integer actualQuantity,
@@ -132,7 +132,7 @@ public class DemandPredictionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<DemandPredictionResponse>> updatePrediction(
             @PathVariable Long id,
             @RequestBody UpdatePredictionDTO updates,
@@ -153,7 +153,7 @@ public class DemandPredictionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<Void>> deletePrediction(
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetails userDetails) {

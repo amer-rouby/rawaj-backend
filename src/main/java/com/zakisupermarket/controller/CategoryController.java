@@ -26,7 +26,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories(
             @RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -45,7 +45,7 @@ public class CategoryController {
      * in one call.
      */
     @GetMapping("/page")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<Page<CategoryResponse>>> getCategoriesPage(
             @RequestParam Long storeId,
             @RequestParam(defaultValue = "0") int page,
@@ -61,7 +61,7 @@ public class CategoryController {
     }
 
     @GetMapping("/count")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getCategoriesCount(
             @RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -76,7 +76,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(
             @PathVariable Long id,
             @RequestParam Long storeId) {
@@ -89,7 +89,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CategoryResponse>> createCategory(
             @Valid @RequestBody CategoryRequest request) {
         request.setStoreId(SecurityUtils.getCurrentStoreId());
@@ -102,7 +102,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CategoryRequest request,
@@ -130,7 +130,7 @@ public class CategoryController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> searchCategories(
             @RequestParam Long storeId,
             @RequestParam String query) {
@@ -143,7 +143,7 @@ public class CategoryController {
     }
 
     @GetMapping("/active")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getActiveCategories(
             @RequestParam Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();

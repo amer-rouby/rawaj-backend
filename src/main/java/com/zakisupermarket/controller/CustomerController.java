@@ -66,7 +66,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
             @Valid @RequestBody CustomerRequest request, @RequestParam Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
@@ -75,7 +75,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> updateCustomer(
             @PathVariable Long id, @Valid @RequestBody CustomerRequest request, @RequestParam Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
@@ -108,7 +108,7 @@ public class CustomerController {
     }
 
     @PostMapping("/{id}/payment")
-    @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> recordPayment(
             @PathVariable Long id,
             @Valid @RequestBody CustomerPaymentRequest request,
