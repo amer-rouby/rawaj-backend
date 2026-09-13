@@ -30,6 +30,15 @@ public class Store {
     @Column(unique = true, length = 100)
     private String licenseNumber;
 
+    // System-generated, globally unique (unlike `id`, which is a per-database
+    // auto-increment counter - every customer runs their own separate,
+    // offline database, so every customer's FIRST store would otherwise get
+    // id=1, and an activation code bound to that id would unlock every other
+    // customer's first store too). This is what activation codes are bound to.
+    @Column(name = "license_key", unique = true, length = 36)
+    @Builder.Default
+    private String licenseKey = java.util.UUID.randomUUID().toString();
+
     @Column(length = 500)
     private String address;
 

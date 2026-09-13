@@ -73,12 +73,16 @@ public class LicenseServiceImpl implements LicenseService {
     @Override
     @Transactional
     public LicenseStatusResponse getStatus(Long storeId) {
+        String licenseKey = storeRepository.findById(storeId)
+                .map(Store::getLicenseKey)
+                .orElse(null);
+
         LicenseState state = repository.findByStoreId(storeId).orElse(null);
         if (state == null) {
             // No row yet = never licensed = unlimited, not locked. Keeps this
             // feature from retroactively locking out any existing store the
             // moment it ships, until you deliberately send that store a code.
-            return LicenseStatusResponse.builder().expired(false).expiresAt(null).build();
+            return LicenseStatusResponse.builder().expired(false).expiresAt(null).licenseKey(licenseKey).build();
         }
 
         Instant now = Instant.now();
@@ -98,12 +102,15 @@ public class LicenseServiceImpl implements LicenseService {
         }
 
         boolean expired = clockRolledBack || now.isAfter(state.getExpiresAt());
-        return LicenseStatusResponse.builder().expired(expired).expiresAt(state.getExpiresAt()).build();
+        return LicenseStatusResponse.builder().expired(expired).expiresAt(state.getExpiresAt()).licenseKey(licenseKey).build();
     }
 
     @Override
     @Transactional
     public LicenseStatusResponse renew(Long storeId, String code) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("STORE_NOT_FOUND", "Store not found"));
+
         Claims claims;
         try {
             claims = Jwts.parserBuilder()
@@ -115,8 +122,12 @@ public class LicenseServiceImpl implements LicenseService {
             throw new LocalizedException(HttpStatus.BAD_REQUEST, "LICENSE_CODE_INVALID", "Invalid or corrupted renewal code");
         }
 
-        Long codeStoreId = claims.get("storeId", Long.class);
-        if (codeStoreId == null || !codeStoreId.equals(storeId)) {
+        // Bound to Store.licenseKey (a random UUID), not the numeric storeId -
+        // every customer runs their own separate, offline database, so every
+        // customer's first store would otherwise get id=1, and a code bound to
+        // that id would unlock every other customer's first store too.
+        String codeLicenseKey = claims.get("licenseKey", String.class);
+        if (codeLicenseKey == null || !codeLicenseKey.equals(store.getLicenseKey())) {
             throw new LocalizedException(HttpStatus.BAD_REQUEST, "LICENSE_CODE_INVALID", "This code was not issued for your store");
         }
 
@@ -125,11 +136,8 @@ public class LicenseServiceImpl implements LicenseService {
             throw new LocalizedException(HttpStatus.BAD_REQUEST, "LICENSE_CODE_INVALID", "Renewal code is missing an expiry date");
         }
 
-        LicenseState state = repository.findByStoreId(storeId).orElseGet(() -> {
-            Store store = storeRepository.findById(storeId)
-                    .orElseThrow(() -> new ResourceNotFoundException("STORE_NOT_FOUND", "Store not found"));
-            return LicenseState.builder().store(store).build();
-        });
+        LicenseState state = repository.findByStoreId(storeId)
+                .orElseGet(() -> LicenseState.builder().store(store).build());
         state.setExpiresAt(expiration.toInstant());
         // A real renewal is a legitimate reference point - reset the watermark
         // to now so a rollback attempted before this renewal doesn't linger.
@@ -137,6 +145,6 @@ public class LicenseServiceImpl implements LicenseService {
         repository.save(state);
 
         log.info("License renewed for storeId {} - new expiry {}", storeId, expiration);
-        return LicenseStatusResponse.builder().expired(false).expiresAt(expiration.toInstant()).build();
+        return LicenseStatusResponse.builder().expired(false).expiresAt(expiration.toInstant()).licenseKey(store.getLicenseKey()).build();
     }
 }

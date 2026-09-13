@@ -5,11 +5,13 @@ import com.zakisupermarket.dto.request.RegisterRequest;
 import com.zakisupermarket.dto.response.AuthResponse;
 import com.zakisupermarket.entity.Store;
 import com.zakisupermarket.entity.User;
+import com.zakisupermarket.entity.license.LicenseState;
 import com.zakisupermarket.exception.AccountLockedException;
 import com.zakisupermarket.exception.LocalizedException;
 import com.zakisupermarket.exception.ResourceNotFoundException;
 import com.zakisupermarket.repository.StoreRepository;
 import com.zakisupermarket.repository.UserRepository;
+import com.zakisupermarket.repository.license.LicenseStateRepository;
 import com.zakisupermarket.security.JwtService;
 import com.zakisupermarket.security.TwoFactorPendingLoginStore;
 import com.zakisupermarket.service.AuthenticationService;
@@ -24,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Service
@@ -41,6 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final SessionService sessionService;
     private final SecuritySettingsService securitySettingsService;
     private final TwoFactorPendingLoginStore twoFactorPendingLoginStore;
+    private final LicenseStateRepository licenseStateRepository;
 
     @Override
     @Transactional
@@ -66,6 +71,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
 
             store = storeRepository.save(store);
+
+            // This is a one-time-purchase product, not a subscription: a brand
+            // new store is locked from the very first login until the vendor
+            // sends back an activation code (see tools/LicenseCodeGenerator.java,
+            // just run with a very long "months" value since there's no renewal
+            // afterwards). Reuses the existing renew()/licenseGuard machinery
+            // as-is - an already-expired row here is functionally identical to
+            // an expired subscription, so the store lands on the same
+            // /license/renew screen without any new screen or endpoint.
+            // Existing stores are untouched: they never got this row, and
+            // getStatus() already treats "no row" as unlimited.
+            LicenseState licenseState = LicenseState.builder()
+                    .store(store)
+                    .expiresAt(Instant.now().minus(Duration.ofMinutes(1)))
+                    .build();
+            licenseStateRepository.save(licenseState);
         } else if (request.getStoreId() != null) {
             store = storeRepository.findById(request.getStoreId())
                     .orElseThrow(() -> new RuntimeException("Store not found"));
