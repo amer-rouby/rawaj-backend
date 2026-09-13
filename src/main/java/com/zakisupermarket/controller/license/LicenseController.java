@@ -1,6 +1,8 @@
 package com.zakisupermarket.controller.license;
 
+import com.zakisupermarket.dto.license.request.LicenseGenerateRequest;
 import com.zakisupermarket.dto.license.request.LicenseRenewRequest;
+import com.zakisupermarket.dto.license.response.LicenseGenerateResponse;
 import com.zakisupermarket.dto.license.response.LicenseStatusResponse;
 import com.zakisupermarket.dto.response.ApiResponse;
 import com.zakisupermarket.service.license.LicenseService;
@@ -39,5 +41,16 @@ public class LicenseController {
         log.info("POST /api/license/renew - storeId: {}", storeId);
         LicenseStatusResponse status = licenseService.renew(storeId, request.getCode());
         return ResponseEntity.ok(ApiResponse.success(status, "Subscription renewed successfully"));
+    }
+
+    // Vendor-only: signs a new code with the private key. Only meaningful on
+    // this internal, never-shipped instance (license.private-key-path unset
+    // everywhere else, so this fails closed on any customer-facing build).
+    @PostMapping("/generate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<LicenseGenerateResponse>> generate(@Valid @RequestBody LicenseGenerateRequest request) {
+        log.info("POST /api/license/generate - licenseKey: {}", request.getLicenseKey());
+        LicenseGenerateResponse response = licenseService.generateCode(request.getLicenseKey(), request.getMonths());
+        return ResponseEntity.ok(ApiResponse.success(response, "Activation code generated"));
     }
 }

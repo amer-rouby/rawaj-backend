@@ -1,5 +1,6 @@
 package com.zakisupermarket.service.impl.license;
 
+import com.zakisupermarket.dto.license.response.LicenseGenerateResponse;
 import com.zakisupermarket.dto.license.response.LicenseStatusResponse;
 import com.zakisupermarket.entity.Store;
 import com.zakisupermarket.entity.license.LicenseState;
@@ -11,20 +12,27 @@ import com.zakisupermarket.service.license.LicenseService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
+import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 
@@ -50,6 +58,12 @@ public class LicenseServiceImpl implements LicenseService {
 
     private final LicenseStateRepository repository;
     private final StoreRepository storeRepository;
+
+    // Blank by default so this fails closed on any instance where it wasn't
+    // deliberately set - only this vendor-only, never-shipped branch/instance
+    // should ever have this pointed at a real private key file.
+    @Value("${license.private-key-path:}")
+    private String privateKeyPath;
 
     private PublicKey publicKey;
 
@@ -138,5 +152,37 @@ public class LicenseServiceImpl implements LicenseService {
 
         log.info("License renewed for storeId {} - new expiry {}", storeId, expiration);
         return LicenseStatusResponse.builder().expired(false).expiresAt(expiration.toInstant()).build();
+    }
+
+    @Override
+    public LicenseGenerateResponse generateCode(String licenseKey, int months) {
+        if (privateKeyPath == null || privateKeyPath.isBlank()) {
+            throw new LocalizedException(HttpStatus.SERVICE_UNAVAILABLE, "LICENSE_GENERATION_NOT_CONFIGURED",
+                    "license.private-key-path is not set - this instance cannot generate codes");
+        }
+
+        PrivateKey privateKey;
+        try {
+            String pem = Files.readString(Path.of(privateKeyPath), StandardCharsets.UTF_8)
+                    .replace("-----BEGIN PRIVATE KEY-----", "")
+                    .replace("-----END PRIVATE KEY-----", "")
+                    .replaceAll("\\s", "");
+            byte[] decoded = Base64.getDecoder().decode(pem);
+            privateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not load license private key from " + privateKeyPath, e);
+        }
+
+        Instant expiresAt = Instant.now().atZone(ZoneId.systemDefault()).plusMonths(months).toInstant();
+
+        String code = Jwts.builder()
+                .claim("licenseKey", licenseKey)
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(expiresAt))
+                .signWith(privateKey, SignatureAlgorithm.RS256)
+                .compact();
+
+        log.info("Generated activation code for licenseKey {} - expires {}", licenseKey, expiresAt);
+        return LicenseGenerateResponse.builder().code(code).licenseKey(licenseKey).expiresAt(expiresAt).build();
     }
 }
