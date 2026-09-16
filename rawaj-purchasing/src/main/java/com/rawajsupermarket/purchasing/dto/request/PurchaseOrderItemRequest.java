@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.request;
+package com.rawajsupermarket.purchasing.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

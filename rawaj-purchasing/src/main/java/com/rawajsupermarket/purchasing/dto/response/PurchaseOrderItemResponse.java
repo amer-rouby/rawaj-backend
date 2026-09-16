@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.purchasing.dto.response;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -21,7 +21,7 @@ public class PurchaseOrderItemResponse {
     private boolean fullyReceived;
     private int pendingQuantity;
 
-    public static PurchaseOrderItemResponse fromEntity(com.rawajsupermarket.entity.PurchaseOrderItem item) {
+    public static PurchaseOrderItemResponse fromEntity(com.rawajsupermarket.purchasing.entity.PurchaseOrderItem item) {
         String productName = "Product unavailable";
         String productBarcode = null;
         Long productId = null;

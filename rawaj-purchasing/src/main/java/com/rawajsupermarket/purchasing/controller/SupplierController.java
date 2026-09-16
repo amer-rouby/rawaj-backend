@@ -1,9 +1,9 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.purchasing.controller;
 
-import com.rawajsupermarket.dto.request.SupplierRequest;
+import com.rawajsupermarket.purchasing.dto.request.SupplierRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.SupplierResponse;
-import com.rawajsupermarket.service.SupplierService;
+import com.rawajsupermarket.purchasing.dto.response.SupplierResponse;
+import com.rawajsupermarket.purchasing.service.SupplierService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

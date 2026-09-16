@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.purchasing.dto.response;
 
 import lombok.*;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class SupplierResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static SupplierResponse fromEntity(com.rawajsupermarket.entity.Supplier supplier) {
+    public static SupplierResponse fromEntity(com.rawajsupermarket.purchasing.entity.Supplier supplier) {
         return SupplierResponse.builder()
                 .id(supplier.getId())
                 .name(supplier.getName())

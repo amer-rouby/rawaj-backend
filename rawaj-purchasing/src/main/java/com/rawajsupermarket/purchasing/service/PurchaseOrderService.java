@@ -1,10 +1,10 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.purchasing.service;
 
-import com.rawajsupermarket.dto.request.PurchaseOrderRequest;
-import com.rawajsupermarket.dto.response.PurchaseOrderResponse;
-import com.rawajsupermarket.dto.response.SendEmailResponse;
-import com.rawajsupermarket.dto.response.SendWhatsAppResponse;
-import com.rawajsupermarket.dto.response.WhatsAppMessageResponse;
+import com.rawajsupermarket.purchasing.dto.request.PurchaseOrderRequest;
+import com.rawajsupermarket.purchasing.dto.response.PurchaseOrderResponse;
+import com.rawajsupermarket.purchasing.dto.response.SendEmailResponse;
+import com.rawajsupermarket.purchasing.dto.response.SendWhatsAppResponse;
+import com.rawajsupermarket.purchasing.dto.response.WhatsAppMessageResponse;
 import org.springframework.data.domain.Page;
 import java.time.LocalDate;
 import java.util.List;

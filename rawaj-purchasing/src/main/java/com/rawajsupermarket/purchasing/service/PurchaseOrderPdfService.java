@@ -1,4 +1,4 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.purchasing.service;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
@@ -6,8 +6,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.Margin;
 import com.rawajsupermarket.common.entity.Store;
-import com.rawajsupermarket.entity.PurchaseOrder;
-import com.rawajsupermarket.entity.PurchaseOrderItem;
+import com.rawajsupermarket.purchasing.entity.PurchaseOrder;
+import com.rawajsupermarket.purchasing.entity.PurchaseOrderItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
