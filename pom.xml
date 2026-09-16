@@ -28,6 +28,7 @@
 		<module>rawaj-customers</module>
 		<module>rawaj-payments</module>
 		<module>rawaj-expenses</module>
+		<module>rawaj-auth</module>
 		<module>rawaj-app</module>
 	</modules>
 
@@ -72,6 +73,11 @@
 			<dependency>
 				<groupId>com.rawajsupermarket</groupId>
 				<artifactId>rawaj-expenses</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.rawajsupermarket</groupId>
+				<artifactId>rawaj-auth</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

@@ -2,16 +2,17 @@ package com.rawajsupermarket.service.impl.settings;
 
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
-import com.rawajsupermarket.entity.settings.SecuritySettings;
+import com.rawajsupermarket.settings.entity.SecuritySettings;
 import com.rawajsupermarket.common.repository.UserRepository;
-import com.rawajsupermarket.repository.settings.SecuritySettingsRepository;
+import com.rawajsupermarket.settings.repository.SecuritySettingsRepository;
 import com.rawajsupermarket.common.security.TotpService;
-import com.rawajsupermarket.service.NotificationService;
+import com.rawajsupermarket.settings.service.impl.SecuritySettingsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -38,13 +39,13 @@ class SecuritySettingsServiceImplTest {
     @Mock
     private TotpService totpService;
     @Mock
-    private NotificationService notificationService;
+    private ApplicationEventPublisher eventPublisher;
 
     private SecuritySettingsServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new SecuritySettingsServiceImpl(securitySettingsRepository, userRepository, passwordEncoder, totpService, notificationService);
+        service = new SecuritySettingsServiceImpl(securitySettingsRepository, userRepository, passwordEncoder, totpService, eventPublisher);
     }
 
     private User userIn(Long storeId) {

@@ -1,7 +1,7 @@
 package com.rawajsupermarket.config;
 
-import com.rawajsupermarket.security.JwtAuthenticationFilter;
-import com.rawajsupermarket.security.LoginRateLimitFilter;
+import com.rawajsupermarket.auth.security.JwtAuthenticationFilter;
+import com.rawajsupermarket.auth.security.LoginRateLimitFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
