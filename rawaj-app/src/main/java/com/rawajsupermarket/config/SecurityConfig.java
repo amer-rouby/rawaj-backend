@@ -1,0 +1,154 @@
+package com.rawajsupermarket.config;
+
+import com.rawajsupermarket.auth.security.JwtAuthenticationFilter;
+import com.rawajsupermarket.auth.security.LoginRateLimitFilter;
+import com.rawajsupermarket.common.security.PlatformAdminAuth;
+import com.rawajsupermarket.common.util.SecurityUtils;
+import com.rawajsupermarket.auth.entity.Session;
+import com.rawajsupermarket.common.entity.User;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final LoginRateLimitFilter loginRateLimitFilter;
+
+    @Value("${app.cors.allowed-origins}")
+    private String allowedOriginsProperty;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/error").permitAll()
+
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/notifications/stream").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        // Platform-operator-only endpoints (whole-database backup/restore).
+                        // Deliberately outside the normal JWT/role system - see PlatformAdminAuth,
+                        // which enforces its own separate secret on every request here.
+                        .requestMatchers("/api/platform/**").permitAll()
+                        // Public "someone clicked a share link" read - no auth by design.
+                        // Creating a link (POST /api/share) still requires isAuthenticated().
+                        .requestMatchers(HttpMethod.GET, "/api/share/*").permitAll()
+
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/api/profile/images/**").permitAll()
+                        .requestMatchers("/api/products/**").permitAll()
+                        .requestMatchers("/api/stock/**").permitAll()
+                        .requestMatchers("/api/sales/**").permitAll()
+                        .requestMatchers("/api/dashboard/**").permitAll()
+                        // Everything under /api/** not already listed above keeps requiring
+                        // authentication at the URL level, exactly as before this rule existed.
+                        .requestMatchers("/api/**").authenticated()
+                        // Anything else is the bundled Angular frontend (SpaWebConfig) when this
+                        // app serves it from the same origin - static JS/CSS plus arbitrary
+                        // client-side route paths (/dashboard, /settings/*, ...) that carry no
+                        // server secret of their own. Real access control still happens per
+                        // /api/** call above (JWT + SecurityUtils/@PreAuthorize) exactly like the
+                        // /api/products/** etc. rows above already rely on - this permitAll only
+                        // lets the page shell load, it grants no data access by itself.
+                        .anyRequest().permitAll()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(loginRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        List<String> allowedOrigins = Arrays.stream(allowedOriginsProperty.split(","))
+                .map(String::trim)
+                .filter(origin -> !origin.isEmpty())
+                .toList();
+        if (allowedOrigins.isEmpty()) {
+            throw new IllegalStateException(
+                    "app.cors.allowed-origins is empty - refusing to start with no allowed CORS origin. " +
+                            "Set it to the real frontend origin(s), comma-separated.");
+        }
+        configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+        configuration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "X-User-Active"
+        ));
+        configuration.setExposedHeaders(List.of(
+                "Authorization",
+                "X-Session-Extended",
+                "X-Remaining-Extensions"
+        ));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}

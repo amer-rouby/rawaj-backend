@@ -1,0 +1,21 @@
+package com.rawajsupermarket.platform.service;
+
+import com.rawajsupermarket.platform.entity.AnomalyDetection;
+import com.rawajsupermarket.platform.dto.response.AnomalyDetectionResponse;
+import org.springframework.data.domain.Page;
+
+public interface AnomalyDetectionService {
+
+    void runDetectionForAllStores();
+
+    void runDetectionForStore(Long storeId);
+
+    Page<AnomalyDetectionResponse> getAnomalies(Long storeId, AnomalyDetection.Status status,
+                                                  AnomalyDetection.Type type, int page, int size);
+
+    long countByStatus(Long storeId, AnomalyDetection.Status status);
+
+    AnomalyDetectionResponse markReviewed(Long id, Long storeId, Long userId);
+
+    AnomalyDetectionResponse dismiss(Long id, Long storeId, Long userId);
+}
