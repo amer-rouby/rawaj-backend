@@ -1,7 +1,8 @@
 package com.rawajsupermarket.service.impl;
 
-import com.rawajsupermarket.dto.request.ReportRequest;
-import com.rawajsupermarket.dto.response.ExpiryReportResponse;
+import com.rawajsupermarket.platform.dto.request.ReportRequest;
+import com.rawajsupermarket.platform.dto.response.ExpiryReportResponse;
+import com.rawajsupermarket.platform.service.impl.ReportServiceImpl;
 import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.catalog.repository.ProductRepository;
 import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
