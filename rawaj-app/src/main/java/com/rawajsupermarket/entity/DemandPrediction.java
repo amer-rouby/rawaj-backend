@@ -1,5 +1,7 @@
 package com.rawajsupermarket.entity;
 
+import com.rawajsupermarket.catalog.entity.Product;
+
 import com.rawajsupermarket.common.entity.Store;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
