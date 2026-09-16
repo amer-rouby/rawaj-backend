@@ -1,6 +1,6 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.einvoice.service;
 
-import com.rawajsupermarket.dto.response.EInvoiceSubmissionResponse;
+import com.rawajsupermarket.einvoice.dto.response.EInvoiceSubmissionResponse;
 
 public interface EInvoiceService {
     EInvoiceSubmissionResponse submit(Long saleId, Long storeId);

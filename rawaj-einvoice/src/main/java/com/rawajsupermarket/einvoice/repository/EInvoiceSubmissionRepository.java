@@ -1,6 +1,6 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.einvoice.repository;
 
-import com.rawajsupermarket.entity.EInvoiceSubmission;
+import com.rawajsupermarket.einvoice.entity.EInvoiceSubmission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

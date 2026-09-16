@@ -1,4 +1,4 @@
-package com.rawajsupermarket.config;
+package com.rawajsupermarket.einvoice.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

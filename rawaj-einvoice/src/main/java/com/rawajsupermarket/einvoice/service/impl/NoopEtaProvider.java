@@ -1,9 +1,9 @@
-package com.rawajsupermarket.service.impl;
+package com.rawajsupermarket.einvoice.service.impl;
 
-import com.rawajsupermarket.config.EtaConfig;
+import com.rawajsupermarket.einvoice.config.EtaConfig;
 import com.rawajsupermarket.sales.entity.SaleTransaction;
-import com.rawajsupermarket.service.EtaIntegrationService;
-import com.rawajsupermarket.service.EtaSubmissionResult;
+import com.rawajsupermarket.einvoice.service.EtaIntegrationService;
+import com.rawajsupermarket.einvoice.service.EtaSubmissionResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

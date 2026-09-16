@@ -1,6 +1,6 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.einvoice.dto.response;
 
-import com.rawajsupermarket.entity.EInvoiceSubmission;
+import com.rawajsupermarket.einvoice.entity.EInvoiceSubmission;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

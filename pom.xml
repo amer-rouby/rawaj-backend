@@ -32,6 +32,7 @@
 		<module>rawaj-notifications</module>
 		<module>rawaj-purchasing</module>
 		<module>rawaj-sales</module>
+		<module>rawaj-einvoice</module>
 		<module>rawaj-app</module>
 	</modules>
 
@@ -96,6 +97,11 @@
 			<dependency>
 				<groupId>com.rawajsupermarket</groupId>
 				<artifactId>rawaj-sales</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.rawajsupermarket</groupId>
+				<artifactId>rawaj-einvoice</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
