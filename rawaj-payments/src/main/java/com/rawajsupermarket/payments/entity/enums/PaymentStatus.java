@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity.enums;
+package com.rawajsupermarket.payments.entity.enums;
 
 public enum PaymentStatus {
     PENDING,

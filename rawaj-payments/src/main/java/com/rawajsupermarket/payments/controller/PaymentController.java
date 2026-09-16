@@ -1,9 +1,9 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.payments.controller;
 
-import com.rawajsupermarket.dto.request.PaymentRequest;
+import com.rawajsupermarket.payments.dto.request.PaymentRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.PaymentResponse;
-import com.rawajsupermarket.service.PaymentService;
+import com.rawajsupermarket.payments.dto.response.PaymentResponse;
+import com.rawajsupermarket.payments.service.PaymentService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

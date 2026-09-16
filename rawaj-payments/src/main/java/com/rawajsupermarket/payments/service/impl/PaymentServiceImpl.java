@@ -1,13 +1,13 @@
-package com.rawajsupermarket.service.impl;
+package com.rawajsupermarket.payments.service.impl;
 
-import com.rawajsupermarket.dto.request.PaymentRequest;
-import com.rawajsupermarket.dto.response.PaymentResponse;
-import com.rawajsupermarket.entity.Payment;
-import com.rawajsupermarket.entity.enums.PaymentMethod;
-import com.rawajsupermarket.entity.enums.PaymentStatus;
-import com.rawajsupermarket.repository.PaymentRepository;
-import com.rawajsupermarket.service.Payment.PaymentGateway;
-import com.rawajsupermarket.service.PaymentService;
+import com.rawajsupermarket.payments.dto.request.PaymentRequest;
+import com.rawajsupermarket.payments.dto.response.PaymentResponse;
+import com.rawajsupermarket.payments.entity.Payment;
+import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
+import com.rawajsupermarket.payments.entity.enums.PaymentStatus;
+import com.rawajsupermarket.payments.repository.PaymentRepository;
+import com.rawajsupermarket.payments.service.impl.PaymentGateway;
+import com.rawajsupermarket.payments.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

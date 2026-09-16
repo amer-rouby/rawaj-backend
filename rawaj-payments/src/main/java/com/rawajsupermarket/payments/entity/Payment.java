@@ -1,11 +1,11 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.payments.entity;
 
 import com.rawajsupermarket.common.entity.Store;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rawajsupermarket.entity.enums.PaymentMethod;
-import com.rawajsupermarket.entity.enums.PaymentStatus;
+import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
+import com.rawajsupermarket.payments.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

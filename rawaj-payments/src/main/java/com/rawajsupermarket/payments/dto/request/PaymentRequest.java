@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.request;
+package com.rawajsupermarket.payments.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.*;

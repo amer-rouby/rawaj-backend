@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.payments.dto.response;
 
 import lombok.*;
 import java.math.BigDecimal;

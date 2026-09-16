@@ -9,7 +9,7 @@ import com.rawajsupermarket.catalog.entity.Product;
 import com.rawajsupermarket.catalog.entity.StockBatch;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
-import com.rawajsupermarket.entity.enums.PaymentMethod;
+import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
 import com.rawajsupermarket.common.exception.LocalizedException;
 import com.rawajsupermarket.common.exception.ResourceNotFoundException;
 import com.rawajsupermarket.repository.*;

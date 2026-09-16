@@ -1,7 +1,7 @@
-package com.rawajsupermarket.config;
+package com.rawajsupermarket.payments.config;
 
-import com.rawajsupermarket.service.Payment.PaymentGateway;
-import com.rawajsupermarket.service.PaymentService;
+import com.rawajsupermarket.payments.service.impl.PaymentGateway;
+import com.rawajsupermarket.payments.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
