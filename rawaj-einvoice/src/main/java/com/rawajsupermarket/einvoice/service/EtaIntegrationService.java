@@ -1,4 +1,4 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.einvoice.service;
 
 import com.rawajsupermarket.sales.entity.SaleTransaction;
 

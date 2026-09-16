@@ -1,4 +1,4 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.einvoice.service;
 
 // Result of one attempt to submit a sale to the Egyptian Tax Authority (ETA).
 public record EtaSubmissionResult(boolean success, String etaUuid, String errorMessage) {

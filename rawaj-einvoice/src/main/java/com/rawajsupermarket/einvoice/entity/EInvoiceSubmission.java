@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.einvoice.entity;
 
 import com.rawajsupermarket.sales.entity.SaleTransaction;
 
