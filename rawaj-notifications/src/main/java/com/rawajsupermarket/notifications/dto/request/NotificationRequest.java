@@ -1,6 +1,6 @@
-package com.rawajsupermarket.dto.request;
+package com.rawajsupermarket.notifications.dto.request;
 
-import com.rawajsupermarket.entity.Notification;
+import com.rawajsupermarket.notifications.entity.Notification;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 import lombok.AllArgsConstructor;

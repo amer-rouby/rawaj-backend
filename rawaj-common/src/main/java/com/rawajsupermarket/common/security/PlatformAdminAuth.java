@@ -1,4 +1,4 @@
-package com.rawajsupermarket.auth.security;
+package com.rawajsupermarket.common.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;

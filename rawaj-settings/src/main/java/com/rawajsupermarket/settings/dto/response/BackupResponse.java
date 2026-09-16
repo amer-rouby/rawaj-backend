@@ -1,6 +1,6 @@
-package com.rawajsupermarket.dto.settings.response;
+package com.rawajsupermarket.settings.dto.response;
 
-import com.rawajsupermarket.entity.settings.BackupRecord;
+import com.rawajsupermarket.settings.entity.BackupRecord;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

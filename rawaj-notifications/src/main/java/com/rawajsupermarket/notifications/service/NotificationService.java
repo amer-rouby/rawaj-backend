@@ -1,7 +1,7 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.notifications.service;
 
-import com.rawajsupermarket.dto.request.NotificationRequest;
-import com.rawajsupermarket.dto.response.NotificationResponse;
+import com.rawajsupermarket.notifications.dto.request.NotificationRequest;
+import com.rawajsupermarket.notifications.dto.response.NotificationResponse;
 import org.springframework.data.domain.Page;
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.rawajsupermarket.service.impl.settings;
+package com.rawajsupermarket.settings.service.impl;
 
-import com.rawajsupermarket.dto.settings.request.BackupRequest;
-import com.rawajsupermarket.dto.settings.response.BackupResponse;
-import com.rawajsupermarket.entity.settings.BackupRecord;
-import com.rawajsupermarket.repository.settings.BackupRecordRepository;
-import com.rawajsupermarket.service.settings.BackupService;
+import com.rawajsupermarket.settings.dto.request.BackupRequest;
+import com.rawajsupermarket.settings.dto.response.BackupResponse;
+import com.rawajsupermarket.settings.entity.BackupRecord;
+import com.rawajsupermarket.settings.repository.BackupRecordRepository;
+import com.rawajsupermarket.settings.service.BackupService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

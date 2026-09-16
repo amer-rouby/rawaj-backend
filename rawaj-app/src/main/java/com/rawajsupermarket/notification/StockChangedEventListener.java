@@ -1,7 +1,7 @@
 package com.rawajsupermarket.notification;
 
 import com.rawajsupermarket.catalog.event.StockChangedEvent;
-import com.rawajsupermarket.service.NotificationStreamService;
+import com.rawajsupermarket.notifications.service.NotificationStreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

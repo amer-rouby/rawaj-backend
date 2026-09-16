@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity.settings;
+package com.rawajsupermarket.settings.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rawajsupermarket.security;
 
-import com.rawajsupermarket.auth.security.PlatformAdminAuth;
+import com.rawajsupermarket.common.security.PlatformAdminAuth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;

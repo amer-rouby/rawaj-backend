@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.settings.request;
+package com.rawajsupermarket.settings.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

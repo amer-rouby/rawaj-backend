@@ -1,7 +1,7 @@
 package com.rawajsupermarket.config;
 
-import com.rawajsupermarket.dto.settings.request.BackupRequest;
-import com.rawajsupermarket.service.settings.BackupService;
+import com.rawajsupermarket.settings.dto.request.BackupRequest;
+import com.rawajsupermarket.settings.service.BackupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

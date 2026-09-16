@@ -1,7 +1,7 @@
-package com.rawajsupermarket.service.settings;
+package com.rawajsupermarket.settings.service;
 
-import com.rawajsupermarket.dto.settings.request.BackupRequest;
-import com.rawajsupermarket.dto.settings.response.BackupResponse;
+import com.rawajsupermarket.settings.dto.request.BackupRequest;
+import com.rawajsupermarket.settings.dto.response.BackupResponse;
 
 import java.util.List;
 
