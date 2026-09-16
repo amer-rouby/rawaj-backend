@@ -3,7 +3,7 @@ package com.rawajsupermarket.controller.settings;
 import com.rawajsupermarket.dto.settings.request.BackupRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
 import com.rawajsupermarket.dto.settings.response.BackupResponse;
-import com.rawajsupermarket.security.PlatformAdminAuth;
+import com.rawajsupermarket.auth.security.PlatformAdminAuth;
 import com.rawajsupermarket.service.settings.BackupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

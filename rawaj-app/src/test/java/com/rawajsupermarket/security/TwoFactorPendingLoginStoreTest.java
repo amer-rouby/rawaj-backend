@@ -1,5 +1,7 @@
 package com.rawajsupermarket.security;
 
+import com.rawajsupermarket.auth.security.TwoFactorPendingLoginStore;
+
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

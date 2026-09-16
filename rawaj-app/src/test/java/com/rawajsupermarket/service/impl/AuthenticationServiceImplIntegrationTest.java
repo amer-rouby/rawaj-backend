@@ -1,15 +1,15 @@
 package com.rawajsupermarket.service.impl;
 
-import com.rawajsupermarket.dto.request.LoginRequest;
+import com.rawajsupermarket.auth.dto.request.LoginRequest;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
-import com.rawajsupermarket.entity.settings.SecuritySettings;
+import com.rawajsupermarket.settings.entity.SecuritySettings;
 import com.rawajsupermarket.repository.NotificationRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
-import com.rawajsupermarket.repository.settings.SecuritySettingsRepository;
-import com.rawajsupermarket.service.AuthenticationService;
-import com.rawajsupermarket.service.SessionService;
+import com.rawajsupermarket.settings.repository.SecuritySettingsRepository;
+import com.rawajsupermarket.auth.service.AuthenticationService;
+import com.rawajsupermarket.auth.service.SessionService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

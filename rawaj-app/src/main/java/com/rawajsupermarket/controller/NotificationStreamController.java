@@ -2,7 +2,7 @@ package com.rawajsupermarket.controller;
 
 import com.rawajsupermarket.common.security.JwtService;
 import com.rawajsupermarket.service.NotificationStreamService;
-import com.rawajsupermarket.service.SessionService;
+import com.rawajsupermarket.auth.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
