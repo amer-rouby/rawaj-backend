@@ -1,11 +1,11 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.expenses.entity;
 import com.rawajsupermarket.common.entity.BaseEntity;
 
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rawajsupermarket.entity.enums.ExpenseCategory;
+import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

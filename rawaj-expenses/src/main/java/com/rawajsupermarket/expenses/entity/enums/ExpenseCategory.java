@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity.enums;
+package com.rawajsupermarket.expenses.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
