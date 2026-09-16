@@ -1,0 +1,1 @@
+var o=[{path:`renew`,loadComponent:()=>import(`./chunk-5K8QFl_M.js`).then(e=>e.LicenseRenewComponent)},{path:`generate`,loadComponent:()=>import(`./chunk-UZ9lRP5b.js`).then(e=>e.LicenseGenerateComponent)}];export{o as LICENSE_ROUTES};

@@ -1,0 +1,1 @@
+var e={production:!1,apiUrl:`http://localhost:8082/api`,appVersion:`1.0.0`,appName:`سوبر ماركت زكي`,tokenKey:`accessToken`,refreshTokenKey:`refreshToken`,userKey:`currentUser`};export{e as t};

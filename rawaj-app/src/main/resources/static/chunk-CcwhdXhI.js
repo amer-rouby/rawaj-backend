@@ -1,0 +1,1 @@
+var t=[{path:``,redirectTo:`pos`,pathMatch:`full`},{path:`pos`,loadComponent:()=>import(`./chunk-CnpCETky.js`).then(o=>o.SalesFormComponent)},{path:`analytics`,loadComponent:()=>import(`./chunk-BP-dQGi1.js`).then(o=>o.SalesAnalyticsComponent)},{path:`history`,loadComponent:()=>import(`./chunk-X-QW_5pT.js`).then(o=>o.SalesHistoryComponent)}];export{t as SALES_ROUTES};

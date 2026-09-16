@@ -1,0 +1,1 @@
+var t=[{path:``,loadComponent:()=>import(`./chunk-DBwOlp4w.js`).then(o=>o.CustomersComponent)}];export{t as CUSTOMERS_ROUTES};
