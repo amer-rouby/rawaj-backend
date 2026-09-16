@@ -1,7 +1,7 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.purchasing.service;
 
-import com.rawajsupermarket.dto.request.SupplierRequest;
-import com.rawajsupermarket.dto.response.SupplierResponse;
+import com.rawajsupermarket.purchasing.dto.request.SupplierRequest;
+import com.rawajsupermarket.purchasing.dto.response.SupplierResponse;
 import org.springframework.data.domain.Page;
 import java.util.List;
 

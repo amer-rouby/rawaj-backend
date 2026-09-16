@@ -1,13 +1,13 @@
-package com.rawajsupermarket.service.impl;
+package com.rawajsupermarket.purchasing.service.impl;
 
-import com.rawajsupermarket.dto.request.SupplierRequest;
-import com.rawajsupermarket.dto.response.SupplierResponse;
+import com.rawajsupermarket.purchasing.dto.request.SupplierRequest;
+import com.rawajsupermarket.purchasing.dto.response.SupplierResponse;
 import com.rawajsupermarket.common.entity.Store;
-import com.rawajsupermarket.entity.Supplier;
+import com.rawajsupermarket.purchasing.entity.Supplier;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.SupplierRepository;
-import com.rawajsupermarket.service.SupplierService;
+import com.rawajsupermarket.purchasing.repository.SupplierRepository;
+import com.rawajsupermarket.purchasing.service.SupplierService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

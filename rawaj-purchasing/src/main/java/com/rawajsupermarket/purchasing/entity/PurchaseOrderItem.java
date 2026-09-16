@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.purchasing.entity;
 
 import com.rawajsupermarket.catalog.entity.Product;
 

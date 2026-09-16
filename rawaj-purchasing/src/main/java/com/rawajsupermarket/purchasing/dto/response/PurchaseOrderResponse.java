@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.purchasing.dto.response;
 
 import lombok.*;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class PurchaseOrderResponse {
     private LocalDateTime updatedAt;
     private List<PurchaseOrderItemResponse> items;
 
-    public static PurchaseOrderResponse fromEntity(com.rawajsupermarket.entity.PurchaseOrder po) {
+    public static PurchaseOrderResponse fromEntity(com.rawajsupermarket.purchasing.entity.PurchaseOrder po) {
         return PurchaseOrderResponse.builder()
                 .id(po.getId())
                 .orderNumber(po.getOrderNumber())
