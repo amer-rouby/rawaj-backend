@@ -6,7 +6,7 @@ import com.rawajsupermarket.dto.response.ReorderRecommendationDTO;
 import com.rawajsupermarket.catalog.dto.response.StockBatchResponse;
 import com.rawajsupermarket.dto.response.RawajInsightsDTO;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
-import com.rawajsupermarket.repository.SaleTransactionRepository;
+import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
 import com.rawajsupermarket.service.AssistantProvider;
 import com.rawajsupermarket.service.DashboardService;
 import com.rawajsupermarket.service.DemandPredictionService;

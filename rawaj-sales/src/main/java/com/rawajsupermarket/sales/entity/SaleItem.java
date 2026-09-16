@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.sales.entity;
 
 import com.rawajsupermarket.catalog.entity.Product;
 import com.rawajsupermarket.catalog.entity.StockBatch;

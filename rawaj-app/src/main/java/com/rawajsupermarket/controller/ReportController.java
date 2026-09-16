@@ -2,6 +2,7 @@ package com.rawajsupermarket.controller;
 
 import com.rawajsupermarket.dto.request.ReportRequest;
 import com.rawajsupermarket.dto.response.*;
+import com.rawajsupermarket.sales.dto.response.SalesReportResponse;
 import com.rawajsupermarket.common.dto.ApiResponse;
 import com.rawajsupermarket.service.ReportService;
 import com.rawajsupermarket.common.util.SecurityUtils;

@@ -1,7 +1,7 @@
 package com.rawajsupermarket.service.impl;
 
 import com.rawajsupermarket.config.EtaConfig;
-import com.rawajsupermarket.entity.SaleTransaction;
+import com.rawajsupermarket.sales.entity.SaleTransaction;
 import com.rawajsupermarket.service.EtaIntegrationService;
 import com.rawajsupermarket.service.EtaSubmissionResult;
 import lombok.RequiredArgsConstructor;

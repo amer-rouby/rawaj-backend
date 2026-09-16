@@ -1,5 +1,7 @@
 package com.rawajsupermarket.entity;
 
+import com.rawajsupermarket.sales.entity.SaleTransaction;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

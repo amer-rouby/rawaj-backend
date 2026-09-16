@@ -2,11 +2,12 @@ package com.rawajsupermarket.service.impl;
 
 import com.rawajsupermarket.dto.request.ReportRequest;
 import com.rawajsupermarket.dto.response.*;
+import com.rawajsupermarket.sales.dto.response.SalesReportResponse;
 import com.rawajsupermarket.common.dto.ApiResponse;
 import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.catalog.repository.ProductRepository;
-import com.rawajsupermarket.repository.SaleTransactionRepository;
+import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
 import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.service.ReportService;
 import lombok.RequiredArgsConstructor;

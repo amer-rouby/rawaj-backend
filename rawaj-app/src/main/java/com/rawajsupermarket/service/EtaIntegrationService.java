@@ -1,6 +1,6 @@
 package com.rawajsupermarket.service;
 
-import com.rawajsupermarket.entity.SaleTransaction;
+import com.rawajsupermarket.sales.entity.SaleTransaction;
 
 // Pluggable ETA (Egyptian Tax Authority) submission backend. NoopEtaProvider
 // is the only implementation today - no real ETA credentials/API call is

@@ -1,10 +1,11 @@
-package com.rawajsupermarket.service.impl;
+package com.rawajsupermarket.sales.service.impl;
 
-import com.rawajsupermarket.dto.request.SaleItemRequest;
-import com.rawajsupermarket.dto.request.SaleRequest;
-import com.rawajsupermarket.dto.response.SaleTransactionDTO;
-import com.rawajsupermarket.dto.response.SalesReportResponse;
-import com.rawajsupermarket.entity.*;
+import com.rawajsupermarket.sales.dto.request.SaleItemRequest;
+import com.rawajsupermarket.sales.dto.request.SaleRequest;
+import com.rawajsupermarket.sales.dto.response.SaleTransactionDTO;
+import com.rawajsupermarket.sales.dto.response.SalesReportResponse;
+import com.rawajsupermarket.sales.entity.SaleItem;
+import com.rawajsupermarket.sales.entity.SaleTransaction;
 import com.rawajsupermarket.catalog.entity.Product;
 import com.rawajsupermarket.catalog.entity.StockBatch;
 import com.rawajsupermarket.common.entity.Store;
@@ -12,19 +13,21 @@ import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
 import com.rawajsupermarket.common.exception.LocalizedException;
 import com.rawajsupermarket.common.exception.ResourceNotFoundException;
-import com.rawajsupermarket.repository.*;
+import com.rawajsupermarket.sales.repository.SaleItemRepository;
+import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
 import com.rawajsupermarket.catalog.repository.ProductRepository;
 import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.settings.repository.StoreSettingsRepository;
 import com.rawajsupermarket.customers.service.CustomerService;
-import com.rawajsupermarket.notifications.service.NotificationService;
-import com.rawajsupermarket.service.SaleTransactionService;
+import com.rawajsupermarket.sales.event.SaleCompletedEvent;
+import com.rawajsupermarket.sales.service.SaleTransactionService;
 import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +55,7 @@ public class SaleTransactionServiceImpl implements SaleTransactionService {
     private final StockBatchRepository stockBatchRepository;
     private final SaleItemRepository saleItemRepository;
     private final UserRepository userRepository;
-    private final NotificationService notificationService;
+    private final ApplicationEventPublisher eventPublisher;
     private final StoreSettingsRepository storeSettingsRepository;
     private final CustomerService customerService;
     private final RawajFeatureSettingsService rawajFeatureSettingsService;
@@ -161,7 +164,7 @@ public class SaleTransactionServiceImpl implements SaleTransactionService {
                     savedSale.getTotalAmount(), savedSale.getId(), currentUserId);
         }
         try {
-            notificationService.notifySaleCompleted(store.getId(), savedSale.getId(), savedSale.getTotalAmount());
+            eventPublisher.publishEvent(new SaleCompletedEvent(store.getId(), savedSale.getId(), savedSale.getTotalAmount()));
         } catch (Exception e) {
             log.warn("Failed to create sale notification for sale {}: {}", savedSale.getId(), e.getMessage());
         }

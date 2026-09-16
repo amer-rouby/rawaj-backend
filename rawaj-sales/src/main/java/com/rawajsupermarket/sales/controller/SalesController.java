@@ -1,10 +1,10 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.sales.controller;
 
-import com.rawajsupermarket.dto.request.SaleRequest;
+import com.rawajsupermarket.sales.dto.request.SaleRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.SaleTransactionDTO;
-import com.rawajsupermarket.dto.response.SalesReportResponse;
-import com.rawajsupermarket.service.SaleTransactionService;
+import com.rawajsupermarket.sales.dto.response.SaleTransactionDTO;
+import com.rawajsupermarket.sales.dto.response.SalesReportResponse;
+import com.rawajsupermarket.sales.service.SaleTransactionService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

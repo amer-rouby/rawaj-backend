@@ -1,8 +1,8 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.sales.service;
 
-import com.rawajsupermarket.dto.request.SaleRequest;
-import com.rawajsupermarket.dto.response.SaleTransactionDTO;
-import com.rawajsupermarket.dto.response.SalesReportResponse;
+import com.rawajsupermarket.sales.dto.request.SaleRequest;
+import com.rawajsupermarket.sales.dto.response.SaleTransactionDTO;
+import com.rawajsupermarket.sales.dto.response.SalesReportResponse;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
