@@ -1,5 +1,8 @@
 package com.rawajsupermarket.entity;
 
+import com.rawajsupermarket.catalog.entity.Product;
+import com.rawajsupermarket.catalog.entity.StockBatch;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;

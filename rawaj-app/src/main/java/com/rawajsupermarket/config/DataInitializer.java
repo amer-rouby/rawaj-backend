@@ -1,12 +1,12 @@
 package com.rawajsupermarket.config;
 
 import com.rawajsupermarket.common.entity.Store;
-import com.rawajsupermarket.entity.Product;
-import com.rawajsupermarket.entity.StockBatch;
+import com.rawajsupermarket.catalog.entity.Product;
+import com.rawajsupermarket.catalog.entity.StockBatch;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.ProductRepository;
-import com.rawajsupermarket.repository.StockBatchRepository;
+import com.rawajsupermarket.catalog.repository.ProductRepository;
+import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
