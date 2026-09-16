@@ -1,6 +1,6 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.expenses.dto.response;
 
-import com.rawajsupermarket.entity.enums.ExpenseCategory;
+import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

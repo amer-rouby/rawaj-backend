@@ -1,8 +1,8 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.expenses.service;
 
-import com.rawajsupermarket.dto.request.ExpenseRequest;
-import com.rawajsupermarket.dto.response.ExpenseResponse;
-import com.rawajsupermarket.dto.response.ExpenseSummaryResponse;
+import com.rawajsupermarket.expenses.dto.request.ExpenseRequest;
+import com.rawajsupermarket.expenses.dto.response.ExpenseResponse;
+import com.rawajsupermarket.expenses.dto.response.ExpenseSummaryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

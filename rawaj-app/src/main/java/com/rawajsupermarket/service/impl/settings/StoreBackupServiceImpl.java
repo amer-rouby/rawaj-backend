@@ -6,6 +6,7 @@ import com.rawajsupermarket.dto.settings.response.BackupResponse;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.entity.settings.BackupRecord;
 import com.rawajsupermarket.repository.*;
+import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.payments.repository.PaymentRepository;
 import com.rawajsupermarket.catalog.repository.CategoryRepository;
 import com.rawajsupermarket.catalog.repository.ProductRepository;

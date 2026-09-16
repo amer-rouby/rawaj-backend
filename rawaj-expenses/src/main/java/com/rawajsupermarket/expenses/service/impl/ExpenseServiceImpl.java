@@ -1,20 +1,21 @@
-package com.rawajsupermarket.service.impl;
+package com.rawajsupermarket.expenses.service.impl;
 
-import com.rawajsupermarket.dto.request.ExpenseRequest;
-import com.rawajsupermarket.dto.response.ExpenseResponse;
-import com.rawajsupermarket.dto.response.ExpenseSummaryResponse;
-import com.rawajsupermarket.entity.Expense;
-import com.rawajsupermarket.entity.enums.ExpenseCategory;
+import com.rawajsupermarket.expenses.dto.request.ExpenseRequest;
+import com.rawajsupermarket.expenses.dto.response.ExpenseResponse;
+import com.rawajsupermarket.expenses.dto.response.ExpenseSummaryResponse;
+import com.rawajsupermarket.expenses.entity.Expense;
+import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.exception.ResourceNotFoundException;
-import com.rawajsupermarket.repository.ExpenseRepository;
+import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
-import com.rawajsupermarket.service.ExpenseService;
-import com.rawajsupermarket.service.NotificationService;
+import com.rawajsupermarket.expenses.service.ExpenseService;
+import com.rawajsupermarket.expenses.event.ExpenseAddedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
-    private final NotificationService notificationService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public ExpenseResponse createExpense(ExpenseRequest request, Long userId) {
@@ -59,7 +60,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         Expense saved = expenseRepository.save(expense);
         try {
-            notificationService.notifyExpenseAdded(store.getId(), saved.getId(), saved.getAmount());
+            eventPublisher.publishEvent(new ExpenseAddedEvent(store.getId(), saved.getId(), saved.getAmount()));
         } catch (Exception e) {
             log.warn("Failed to create expense notification for expense {}: {}", saved.getId(), e.getMessage());
         }

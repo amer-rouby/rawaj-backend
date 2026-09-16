@@ -1,7 +1,7 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.expenses.repository;
 
-import com.rawajsupermarket.entity.Expense;
-import com.rawajsupermarket.entity.enums.ExpenseCategory;
+import com.rawajsupermarket.expenses.entity.Expense;
+import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

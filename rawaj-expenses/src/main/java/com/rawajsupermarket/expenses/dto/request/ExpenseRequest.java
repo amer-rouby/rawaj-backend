@@ -1,11 +1,11 @@
-package com.rawajsupermarket.dto.request;
+package com.rawajsupermarket.expenses.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.rawajsupermarket.entity.enums.ExpenseCategory;
+import com.rawajsupermarket.expenses.entity.enums.ExpenseCategory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

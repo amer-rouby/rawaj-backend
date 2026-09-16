@@ -1,10 +1,10 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.expenses.controller;
 
-import com.rawajsupermarket.dto.request.ExpenseRequest;
+import com.rawajsupermarket.expenses.dto.request.ExpenseRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.ExpenseResponse;
-import com.rawajsupermarket.dto.response.ExpenseSummaryResponse;
-import com.rawajsupermarket.service.ExpenseService;
+import com.rawajsupermarket.expenses.dto.response.ExpenseResponse;
+import com.rawajsupermarket.expenses.dto.response.ExpenseSummaryResponse;
+import com.rawajsupermarket.expenses.service.ExpenseService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
