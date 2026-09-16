@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.sales.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

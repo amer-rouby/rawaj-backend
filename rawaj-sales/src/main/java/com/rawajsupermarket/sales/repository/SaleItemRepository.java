@@ -1,7 +1,7 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.sales.repository;
 
-import com.rawajsupermarket.entity.SaleItem;
-import com.rawajsupermarket.entity.SaleTransaction;
+import com.rawajsupermarket.sales.entity.SaleItem;
+import com.rawajsupermarket.sales.entity.SaleTransaction;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

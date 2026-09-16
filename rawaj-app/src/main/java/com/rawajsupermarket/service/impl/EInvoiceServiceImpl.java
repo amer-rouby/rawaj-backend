@@ -2,10 +2,10 @@ package com.rawajsupermarket.service.impl;
 
 import com.rawajsupermarket.dto.response.EInvoiceSubmissionResponse;
 import com.rawajsupermarket.entity.EInvoiceSubmission;
-import com.rawajsupermarket.entity.SaleTransaction;
+import com.rawajsupermarket.sales.entity.SaleTransaction;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
 import com.rawajsupermarket.repository.EInvoiceSubmissionRepository;
-import com.rawajsupermarket.repository.SaleTransactionRepository;
+import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
 import com.rawajsupermarket.service.EInvoiceService;
 import com.rawajsupermarket.service.EtaIntegrationService;
 import com.rawajsupermarket.service.EtaSubmissionResult;

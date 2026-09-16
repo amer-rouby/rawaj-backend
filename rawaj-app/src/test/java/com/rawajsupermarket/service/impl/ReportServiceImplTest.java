@@ -4,7 +4,7 @@ import com.rawajsupermarket.dto.request.ReportRequest;
 import com.rawajsupermarket.dto.response.ExpiryReportResponse;
 import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.catalog.repository.ProductRepository;
-import com.rawajsupermarket.repository.SaleTransactionRepository;
+import com.rawajsupermarket.sales.repository.SaleTransactionRepository;
 import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

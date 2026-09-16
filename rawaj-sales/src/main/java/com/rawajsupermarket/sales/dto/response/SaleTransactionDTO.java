@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.sales.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

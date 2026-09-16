@@ -5,7 +5,7 @@ import com.rawajsupermarket.catalog.entity.Product;
 import com.rawajsupermarket.catalog.entity.StockBatch;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
 import com.rawajsupermarket.catalog.repository.ProductRepository;
-import com.rawajsupermarket.repository.SaleItemRepository;
+import com.rawajsupermarket.sales.repository.SaleItemRepository;
 import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.service.PricingRecommendationService;
 import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
