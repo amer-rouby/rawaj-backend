@@ -1,11 +1,11 @@
-package com.rawajsupermarket.service.Payment;
+package com.rawajsupermarket.payments.service.impl;
 
-import com.rawajsupermarket.dto.request.PaymentRequest;
-import com.rawajsupermarket.dto.response.PaymentResponse;
-import com.rawajsupermarket.entity.Payment;
-import com.rawajsupermarket.entity.enums.PaymentMethod;
-import com.rawajsupermarket.entity.enums.PaymentStatus;
-import com.rawajsupermarket.repository.PaymentRepository;
+import com.rawajsupermarket.payments.dto.request.PaymentRequest;
+import com.rawajsupermarket.payments.dto.response.PaymentResponse;
+import com.rawajsupermarket.payments.entity.Payment;
+import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
+import com.rawajsupermarket.payments.entity.enums.PaymentStatus;
+import com.rawajsupermarket.payments.repository.PaymentRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

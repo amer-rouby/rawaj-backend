@@ -4,7 +4,7 @@ import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rawajsupermarket.entity.enums.PaymentMethod;
+import com.rawajsupermarket.payments.entity.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

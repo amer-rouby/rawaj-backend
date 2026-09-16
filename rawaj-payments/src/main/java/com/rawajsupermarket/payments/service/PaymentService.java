@@ -1,8 +1,8 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.payments.service;
 
-import com.rawajsupermarket.dto.request.PaymentRequest;
-import com.rawajsupermarket.dto.response.PaymentResponse;
-import com.rawajsupermarket.service.Payment.PaymentGateway;
+import com.rawajsupermarket.payments.dto.request.PaymentRequest;
+import com.rawajsupermarket.payments.dto.response.PaymentResponse;
+import com.rawajsupermarket.payments.service.impl.PaymentGateway;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

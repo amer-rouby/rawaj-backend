@@ -1,7 +1,7 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.payments.repository;
 
-import com.rawajsupermarket.entity.Payment;
-import com.rawajsupermarket.entity.enums.PaymentStatus;
+import com.rawajsupermarket.payments.entity.Payment;
+import com.rawajsupermarket.payments.entity.enums.PaymentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
