@@ -10,7 +10,7 @@ import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.exception.ResourceNotFoundException;
 import com.rawajsupermarket.repository.ExpenseRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.ExpenseService;
 import com.rawajsupermarket.service.NotificationService;
 import lombok.RequiredArgsConstructor;

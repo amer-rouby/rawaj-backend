@@ -21,7 +21,7 @@ import com.rawajsupermarket.repository.ProductRepository;
 import com.rawajsupermarket.repository.SaleItemRepository;
 import com.rawajsupermarket.service.DemandPredictionService;
 import com.rawajsupermarket.service.ShareLinkService;
-import com.rawajsupermarket.service.settings.RawajFeatureSettingsService;
+import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

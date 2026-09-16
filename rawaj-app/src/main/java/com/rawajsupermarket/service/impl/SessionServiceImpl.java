@@ -6,7 +6,7 @@ import com.rawajsupermarket.entity.Session;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.exception.MaxExtensionsReachedException;
 import com.rawajsupermarket.repository.SessionRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -4,7 +4,7 @@ import com.rawajsupermarket.dto.request.UserSettingsRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
 import com.rawajsupermarket.dto.response.UserSettingsResponse;
 import com.rawajsupermarket.common.entity.User;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.SessionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.rawajsupermarket.dto.response.AssistantAnswer;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
 import com.rawajsupermarket.service.AssistantProvider;
 import com.rawajsupermarket.service.AssistantService;
-import com.rawajsupermarket.service.settings.RawajFeatureSettingsService;
+import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

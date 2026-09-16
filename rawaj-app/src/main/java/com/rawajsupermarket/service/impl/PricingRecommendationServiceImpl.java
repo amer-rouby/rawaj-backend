@@ -8,7 +8,7 @@ import com.rawajsupermarket.repository.ProductRepository;
 import com.rawajsupermarket.repository.SaleItemRepository;
 import com.rawajsupermarket.repository.StockBatchRepository;
 import com.rawajsupermarket.service.PricingRecommendationService;
-import com.rawajsupermarket.service.settings.RawajFeatureSettingsService;
+import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

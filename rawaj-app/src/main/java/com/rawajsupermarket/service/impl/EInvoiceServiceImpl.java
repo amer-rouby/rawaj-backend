@@ -9,7 +9,7 @@ import com.rawajsupermarket.repository.SaleTransactionRepository;
 import com.rawajsupermarket.service.EInvoiceService;
 import com.rawajsupermarket.service.EtaIntegrationService;
 import com.rawajsupermarket.service.EtaSubmissionResult;
-import com.rawajsupermarket.service.settings.RawajFeatureSettingsService;
+import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,7 +6,7 @@ import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.entity.settings.SecuritySettings;
 import com.rawajsupermarket.repository.NotificationRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.repository.settings.SecuritySettingsRepository;
 import com.rawajsupermarket.service.AuthenticationService;
 import com.rawajsupermarket.service.SessionService;

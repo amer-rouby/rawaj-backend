@@ -8,7 +8,7 @@ import com.rawajsupermarket.entity.StockMovement;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.repository.StockBatchRepository;
 import com.rawajsupermarket.repository.StockMovementRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.StockMovementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
