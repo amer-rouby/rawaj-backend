@@ -1,4 +1,4 @@
-package com.rawajsupermarket.entity;
+package com.rawajsupermarket.customers.entity;
 
 import com.rawajsupermarket.common.entity.User;
 

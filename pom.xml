@@ -25,6 +25,7 @@
 		<module>rawaj-license</module>
 		<module>rawaj-settings</module>
 		<module>rawaj-catalog</module>
+		<module>rawaj-customers</module>
 		<module>rawaj-app</module>
 	</modules>
 
@@ -54,6 +55,11 @@
 			<dependency>
 				<groupId>com.rawajsupermarket</groupId>
 				<artifactId>rawaj-catalog</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.rawajsupermarket</groupId>
+				<artifactId>rawaj-customers</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

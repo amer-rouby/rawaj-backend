@@ -1,12 +1,12 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.customers.controller;
 
-import com.rawajsupermarket.dto.request.CustomerPaymentRequest;
-import com.rawajsupermarket.dto.request.CustomerRequest;
+import com.rawajsupermarket.customers.dto.request.CustomerPaymentRequest;
+import com.rawajsupermarket.customers.dto.request.CustomerRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.CustomerResponse;
-import com.rawajsupermarket.dto.response.CustomerStatementResponse;
+import com.rawajsupermarket.customers.dto.response.CustomerResponse;
+import com.rawajsupermarket.customers.dto.response.CustomerStatementResponse;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
-import com.rawajsupermarket.service.CustomerService;
+import com.rawajsupermarket.customers.service.CustomerService;
 import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;

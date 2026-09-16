@@ -1,6 +1,6 @@
-package com.rawajsupermarket.dto.response;
+package com.rawajsupermarket.customers.dto.response;
 
-import com.rawajsupermarket.entity.Customer;
+import com.rawajsupermarket.customers.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

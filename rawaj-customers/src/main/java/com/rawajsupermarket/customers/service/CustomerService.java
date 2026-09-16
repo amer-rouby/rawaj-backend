@@ -1,10 +1,10 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.customers.service;
 
-import com.rawajsupermarket.dto.request.CustomerPaymentRequest;
-import com.rawajsupermarket.dto.request.CustomerRequest;
-import com.rawajsupermarket.dto.response.CustomerResponse;
-import com.rawajsupermarket.dto.response.CustomerStatementResponse;
-import com.rawajsupermarket.entity.Customer;
+import com.rawajsupermarket.customers.dto.request.CustomerPaymentRequest;
+import com.rawajsupermarket.customers.dto.request.CustomerRequest;
+import com.rawajsupermarket.customers.dto.response.CustomerResponse;
+import com.rawajsupermarket.customers.dto.response.CustomerStatementResponse;
+import com.rawajsupermarket.customers.entity.Customer;
 import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
