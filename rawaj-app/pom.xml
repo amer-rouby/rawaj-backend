@@ -66,6 +66,10 @@
 			<groupId>com.rawajsupermarket</groupId>
 			<artifactId>rawaj-einvoice</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.rawajsupermarket</groupId>
+			<artifactId>rawaj-platform</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
