@@ -18,7 +18,7 @@ import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.settings.repository.StoreSettingsRepository;
-import com.rawajsupermarket.service.CustomerService;
+import com.rawajsupermarket.customers.service.CustomerService;
 import com.rawajsupermarket.service.NotificationService;
 import com.rawajsupermarket.service.SaleTransactionService;
 import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;

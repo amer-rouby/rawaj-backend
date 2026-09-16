@@ -1,4 +1,4 @@
-package com.rawajsupermarket.dto.request;
+package com.rawajsupermarket.customers.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

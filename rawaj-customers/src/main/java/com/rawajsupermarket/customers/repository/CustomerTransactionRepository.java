@@ -1,6 +1,6 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.customers.repository;
 
-import com.rawajsupermarket.entity.CustomerTransaction;
+import com.rawajsupermarket.customers.entity.CustomerTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,6 @@
-package com.rawajsupermarket.repository;
+package com.rawajsupermarket.customers.repository;
 
-import com.rawajsupermarket.entity.Customer;
+import com.rawajsupermarket.customers.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
