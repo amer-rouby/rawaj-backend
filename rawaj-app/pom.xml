@@ -15,7 +15,7 @@
 	<artifactId>rawaj-app</artifactId>
 	<packaging>jar</packaging>
 	<name>Rawaj App</name>
-	<description>Runnable bootstrap module - assembles all Rawaj Supermarket modules into one deployable jar</description>
+	<description>Runnable bootstrap module - assembles all Rawaj Tech Shop modules into one deployable jar</description>
 
 	<dependencies>
 		<dependency>

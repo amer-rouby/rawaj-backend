@@ -1,0 +1,568 @@
+package com.rawajtechshop.purchasing.service.impl;
+
+import com.rawajtechshop.common.service.EmailService;
+import com.rawajtechshop.common.exception.FeatureDisabledException;
+import com.rawajtechshop.common.exception.LocalizedException;
+import com.rawajtechshop.catalog.entity.Product;
+import com.rawajtechshop.catalog.repository.ProductRepository;
+import com.rawajtechshop.purchasing.entity.PurchaseOrder;
+import com.rawajtechshop.purchasing.entity.PurchaseOrderItem;
+import com.rawajtechshop.purchasing.repository.PurchaseOrderItemRepository;
+import com.rawajtechshop.purchasing.dto.request.PurchaseOrderItemRequest;
+import com.rawajtechshop.purchasing.service.PurchaseOrderPdfService;
+import com.rawajtechshop.purchasing.repository.PurchaseOrderRepository;
+import com.rawajtechshop.purchasing.dto.request.PurchaseOrderRequest;
+import com.rawajtechshop.purchasing.dto.response.PurchaseOrderResponse;
+import com.rawajtechshop.purchasing.service.PurchaseOrderService;
+import com.rawajtechshop.settings.service.RawajFeatureSettingsService;
+import com.rawajtechshop.common.exception.ResourceNotFoundException;
+import com.rawajtechshop.purchasing.dto.response.SendEmailResponse;
+import com.rawajtechshop.purchasing.dto.response.SendWhatsAppResponse;
+import com.rawajtechshop.catalog.entity.StockBatch;
+import com.rawajtechshop.catalog.repository.StockBatchRepository;
+import com.rawajtechshop.catalog.entity.StockMovement;
+import com.rawajtechshop.catalog.dto.request.StockMovementRequest;
+import com.rawajtechshop.catalog.service.StockMovementService;
+import com.rawajtechshop.common.entity.Store;
+import com.rawajtechshop.common.repository.StoreRepository;
+import com.rawajtechshop.purchasing.entity.Supplier;
+import com.rawajtechshop.purchasing.repository.SupplierRepository;
+import com.rawajtechshop.common.entity.User;
+import com.rawajtechshop.common.repository.UserRepository;
+import com.rawajtechshop.purchasing.dto.response.WhatsAppMessageResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class PurchaseOrderServiceImpl implements PurchaseOrderService {
+    private final PurchaseOrderRepository orderRepository;
+    private final PurchaseOrderItemRepository itemRepository;
+    private final SupplierRepository supplierRepository;
+    private final ProductRepository productRepository;
+    private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
+    private final StockBatchRepository stockBatchRepository;
+    private final StockMovementService stockMovementService;
+    private final EmailService emailService;
+    private final PurchaseOrderPdfService purchaseOrderPdfService;
+    private final RawajFeatureSettingsService rawajFeatureSettingsService;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PurchaseOrderResponse> getAllOrders(Long storeId, int page, int size) {
+        log.info("Fetching purchase orders for store: {}, page: {}, size: {}", storeId, page, size);
+        return orderRepository.findByStoreId(storeId, PageRequest.of(page, size))
+                .map(PurchaseOrderResponse::fromEntity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PurchaseOrderResponse> getOrdersByStatus(Long storeId, String status, int page, int size) {
+        return orderRepository.findByStoreIdAndStatus(storeId, status, PageRequest.of(page, size))
+                .map(PurchaseOrderResponse::fromEntity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PurchaseOrderResponse getOrder(Long id, Long storeId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+        return PurchaseOrderResponse.fromEntity(order);
+    }
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponse createOrder(PurchaseOrderRequest request, Long storeId, Long userId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("STORE_NOT_FOUND", "Store not found"));
+
+        Supplier supplier = supplierRepository.findByIdAndStoreIdAndDeletedAtIsNull(request.getSupplierId(), storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("SUPPLIER_NOT_FOUND", "Supplier not found"));
+
+        if (!supplier.isActive()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "SUPPLIER_BLOCKED_OR_INACTIVE",
+                    "Cannot create a purchase order for a blocked or inactive supplier: " + supplier.getName(),
+                    Map.of("supplierName", supplier.getName()));
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("USER_NOT_FOUND", "User not found"));
+
+        String orderNumber = generateOrderNumber(storeId);
+
+        PurchaseOrder order = PurchaseOrder.builder()
+                .orderNumber(orderNumber)
+                .store(store)
+                .supplier(supplier)
+                .orderDate(request.getOrderDate())
+                .expectedDeliveryDate(request.getExpectedDeliveryDate())
+                .totalAmount(java.math.BigDecimal.ZERO)
+                .status("DRAFT")
+                .priority(request.getPriority())
+                .paymentTerms(request.getPaymentTerms())
+                .notes(request.getNotes())
+                .sourceType(request.getSourceType())
+                .sourceId(request.getSourceId())
+                .createdBy(user)
+                .build();
+
+        for (PurchaseOrderItemRequest itemReq : request.getItems()) {
+            Product product = productRepository.findByIdAndStoreId(itemReq.getProductId(), storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("PRODUCT_NOT_FOUND", "Product not found: " + itemReq.getProductId()));
+
+            BigDecimal unitPrice = itemReq.getUnitPrice();
+            if (unitPrice == null || unitPrice.compareTo(BigDecimal.ZERO) < 0) {
+                throw new LocalizedException(HttpStatus.BAD_REQUEST, "INVALID_UNIT_PRICE",
+                        "Invalid unit price for product: " + product.getName(),
+                        Map.of("productName", product.getName()));
+            }
+
+            Integer quantity = itemReq.getQuantity();
+            if (quantity == null || quantity < 1) {
+                throw new LocalizedException(HttpStatus.BAD_REQUEST, "INVALID_QUANTITY",
+                        "Invalid quantity for product: " + product.getName(),
+                        Map.of("productName", product.getName()));
+            }
+
+            PurchaseOrderItem item = PurchaseOrderItem.builder()
+                    .product(product)
+                    .quantity(quantity)
+                    .unitPrice(unitPrice)
+                    .notes(itemReq.getNotes())
+                    .build();
+
+            item.calculateTotal();
+            order.addItem(item);
+        }
+
+        PurchaseOrder saved = orderRepository.save(order);
+        log.info("Purchase order created: number={}, supplier={}, total={}",
+                saved.getOrderNumber(), supplier.getName(), saved.getTotalAmount());
+        return PurchaseOrderResponse.fromEntity(saved);
+    }
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponse updateOrder(Long id, PurchaseOrderRequest request, Long storeId, Long userId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+
+        if (!order.isDraft()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NOT_DRAFT",
+                    "Only draft orders can be updated");
+        }
+
+        Supplier supplier = supplierRepository.findByIdAndStoreIdAndDeletedAtIsNull(request.getSupplierId(), storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("SUPPLIER_NOT_FOUND", "Supplier not found"));
+
+        if (!supplier.isActive()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "SUPPLIER_BLOCKED_OR_INACTIVE",
+                    "Cannot assign a blocked or inactive supplier: " + supplier.getName(),
+                    Map.of("supplierName", supplier.getName()));
+        }
+
+        order.setSupplier(supplier);
+        order.setOrderDate(request.getOrderDate());
+        order.setExpectedDeliveryDate(request.getExpectedDeliveryDate());
+        order.setPriority(request.getPriority());
+        order.setPaymentTerms(request.getPaymentTerms());
+        order.setNotes(request.getNotes());
+
+        order.getItems().clear();
+
+        for (PurchaseOrderItemRequest itemReq : request.getItems()) {
+            Product product = productRepository.findByIdAndStoreId(itemReq.getProductId(), storeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("PRODUCT_NOT_FOUND", "Product not found: " + itemReq.getProductId()));
+
+            PurchaseOrderItem item = PurchaseOrderItem.builder()
+                    .product(product)
+                    .quantity(itemReq.getQuantity())
+                    .unitPrice(itemReq.getUnitPrice())
+                    .notes(itemReq.getNotes())
+                    .build();
+
+            order.addItem(item);
+        }
+
+        PurchaseOrder updated = orderRepository.save(order);
+        log.info("Purchase order updated: number={}", updated.getOrderNumber());
+        return PurchaseOrderResponse.fromEntity(updated);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrder(Long id, Long storeId, Long userId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+
+        if (!order.isDraft()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NOT_DRAFT",
+                    "Only draft orders can be deleted");
+        }
+
+        order.setDeletedAt(LocalDateTime.now());
+        orderRepository.save(order);
+        log.info("Purchase order deleted (soft): id={}", id);
+    }
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponse approveOrder(Long id, Long storeId, Long userId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+
+        if (!order.isDraft()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NOT_DRAFT",
+                    "Only draft orders can be approved");
+        }
+
+        User approver = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("USER_NOT_FOUND", "User not found"));
+
+        order.setStatus("APPROVED");
+        order.setApprovedBy(approver);
+
+        PurchaseOrder updated = orderRepository.save(order);
+        log.info("Purchase order approved: number={}, by={}", updated.getOrderNumber(), userId);
+        return PurchaseOrderResponse.fromEntity(updated);
+    }
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponse cancelOrder(Long id, Long storeId, Long userId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+
+        if (order.isReceived() || order.isCancelled()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_CANNOT_CANCEL",
+                    "Cannot cancel this order");
+        }
+
+        order.setStatus("CANCELLED");
+        PurchaseOrder updated = orderRepository.save(order);
+        log.info("Purchase order cancelled: number={}", updated.getOrderNumber());
+        return PurchaseOrderResponse.fromEntity(updated);
+    }
+
+    @Override
+    @Transactional
+    public PurchaseOrderResponse receiveOrder(Long id, Long storeId, Long userId) {
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found"));
+
+        if (!order.isApproved()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NOT_APPROVED",
+                    "Only approved orders can be received");
+        }
+
+        order.setStatus("RECEIVED");
+        order.setActualDeliveryDate(LocalDate.now());
+
+        for (PurchaseOrderItem item : order.getItems()) {
+            if (item.getQuantity() > 0) {
+                Product product = item.getProduct();
+                BigDecimal newBuyPrice = item.getUnitPrice();
+
+                // quantityCurrent starts at 0 - the STOCK_IN movement created below is what
+                // actually brings it up to item.getQuantity(). Pre-filling it here as well
+                // used to double the batch's stock (100 ordered -> 200 on the shelf).
+                StockBatch batch = StockBatch.builder()
+                        .product(product)
+                        .store(order.getStore())
+                        .batchNumber("PO-" + order.getOrderNumber() + "-" + item.getProduct().getId())
+                        .quantityInitial(item.getQuantity())
+                        .quantityCurrent(0)
+                        .expiryDate(LocalDate.now().plusMonths(24))
+                        .buyPrice(newBuyPrice)
+                        .sellPrice(product.getSellPrice())
+                        .status(StockBatch.BatchStatus.ACTIVE)
+                        .createdBy(User.builder().id(userId).build())
+                        .build();
+
+                stockBatchRepository.save(batch);
+                item.setReceivedQuantity(item.getQuantity());
+
+                if (product.getBuyPrice() == null || product.getBuyPrice().compareTo(newBuyPrice) != 0) {
+                    BigDecimal oldBuyPrice = product.getBuyPrice();
+                    product.setBuyPrice(newBuyPrice);
+
+                    BigDecimal profitMargin = BigDecimal.valueOf(0.25);
+                    BigDecimal newSellPrice = newBuyPrice.multiply(BigDecimal.ONE.add(profitMargin))
+                            .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+                    if (product.getSellPrice() == null || product.getSellPrice().compareTo(newSellPrice) != 0) {
+                        product.setSellPrice(newSellPrice);
+                    }
+
+                    productRepository.save(product);
+
+                    log.info("Product prices updated | productId: {} | productName: {} | oldBuyPrice: {} | newBuyPrice: {} | newSellPrice: {}",
+                            product.getId(), product.getName(), oldBuyPrice, newBuyPrice, newSellPrice);
+                }
+
+                // Not caught: this movement is what actually brings the batch's
+                // quantityCurrent up from 0 to item.getQuantity() (see above), so letting
+                // a failure here roll back the whole @Transactional receive is correct -
+                // swallowing it would silently leave the batch at zero stock.
+                StockMovementRequest movementRequest = StockMovementRequest.builder()
+                        .batchId(batch.getId())
+                        .movementType(StockMovement.MovementType.STOCK_IN)
+                        .quantity(item.getQuantity())
+                        .unitPrice(newBuyPrice)
+                        .referenceNumber(order.getOrderNumber())
+                        .reason("Purchase order received: " + order.getOrderNumber())
+                        .build();
+
+                stockMovementService.createMovement(movementRequest, userId, storeId);
+                log.info("Stock movement created for received order: batchId={}, quantity={}",
+                        batch.getId(), item.getQuantity());
+            }
+        }
+
+        PurchaseOrder updated = orderRepository.save(order);
+        log.info("Purchase order received: number={}, items={}", updated.getOrderNumber(), updated.getItems().size());
+        return PurchaseOrderResponse.fromEntity(updated);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long countOrders(Long storeId) {
+        return orderRepository.countByStoreId(storeId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long countOrdersByStatus(Long storeId, String status) {
+        return orderRepository.countByStoreIdAndStatus(storeId, status);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PurchaseOrderResponse> getOrdersByDateRange(Long storeId, LocalDate startDate, LocalDate endDate) {
+        return orderRepository.findByStoreIdAndDateRange(storeId, startDate, endDate).stream()
+                .map(PurchaseOrderResponse::fromEntity)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public java.math.BigDecimal getTotalPurchasesAmount(Long storeId, LocalDate startDate, LocalDate endDate) {
+        return orderRepository.sumTotalAmountByStoreIdAndDateRange(storeId, startDate, endDate);
+    }
+
+    private String generateOrderNumber(Long storeId) {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        return "PO-" + storeId + "-" + timestamp;
+    }
+
+    @Override
+    @Transactional
+    public SendWhatsAppResponse sendWhatsAppMessage(Long orderId, Long storeId) {
+        log.info("Sending WhatsApp message for orderId: {}, storeId: {}", orderId, storeId);
+
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(orderId, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found with id: " + orderId));
+
+        Supplier supplier = order.getSupplier();
+        if (supplier == null) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NO_SUPPLIER",
+                    "No supplier assigned to this purchase order");
+        }
+
+        String phone = supplier.getPhone();
+        if (phone == null || phone.isBlank()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "SUPPLIER_NO_PHONE",
+                    "Supplier has no phone number");
+        }
+
+        // Clean phone number to international format (without +)
+        String cleanPhone = phone.replaceAll("[^0-9]", "");
+        if (cleanPhone.startsWith("002")) {
+            cleanPhone = cleanPhone.substring(3);
+        } else if (cleanPhone.startsWith("00")) {
+            cleanPhone = cleanPhone.substring(2);
+        } else if (cleanPhone.startsWith("+")) {
+            cleanPhone = cleanPhone.substring(1);
+        }
+        if (cleanPhone.startsWith("0")) {
+            cleanPhone = "20" + cleanPhone.substring(1);
+        }
+
+        String message = formatWhatsAppMessage(order);
+
+        // URL-encode the message for wa.me link
+        String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8);
+        String whatsappUrl = "https://wa.me/" + cleanPhone + "?text=" + encodedMessage;
+
+        log.info("WhatsApp Click-to-Chat link generated for order: {} -> phone: {}", order.getOrderNumber(), cleanPhone);
+
+        return SendWhatsAppResponse.builder()
+                .success(true)
+                .messageId("click-to-chat")
+                .whatsAppUrl(whatsappUrl)
+                .phoneNumber(cleanPhone)
+                .encodedMessage(encodedMessage)
+                .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public WhatsAppMessageResponse generateWhatsAppMessage(Long orderId, Long storeId) {
+        log.info("Generating WhatsApp message for orderId: {}, storeId: {}", orderId, storeId);
+
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(orderId, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found with id: " + orderId));
+
+        Supplier supplier = order.getSupplier();
+        if (supplier == null) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NO_SUPPLIER",
+                    "No supplier assigned to this purchase order");
+        }
+
+        String phone = supplier.getPhone();
+        if (phone == null || phone.isBlank()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "SUPPLIER_NO_PHONE",
+                    "Supplier has no phone number");
+        }
+
+        // Clean phone number: keep only digits, ensure international format without +
+        String cleanPhone = phone.replaceAll("[^0-9]", "");
+        if (cleanPhone.startsWith("002")) {
+            cleanPhone = cleanPhone.substring(3);
+        } else if (cleanPhone.startsWith("00")) {
+            cleanPhone = cleanPhone.substring(2);
+        } else if (cleanPhone.startsWith("+")) {
+            cleanPhone = cleanPhone.substring(1);
+        }
+        // If it starts with 0 (Egyptian local format), replace 0 with 20
+        if (cleanPhone.startsWith("0")) {
+            cleanPhone = "20" + cleanPhone.substring(1);
+        }
+
+        String message = formatWhatsAppMessage(order);
+
+        // URL-encode the message for wa.me link
+        String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8);
+        String whatsappUrl = "https://wa.me/" + cleanPhone + "?text=" + encodedMessage;
+
+        log.info("WhatsApp message generated for order: {} -> phone: {}", order.getOrderNumber(), cleanPhone);
+
+        return WhatsAppMessageResponse.builder()
+                .phoneNumber(cleanPhone)
+                .message(message)
+                .encodedMessage(encodedMessage)
+                .whatsAppUrl(whatsappUrl)
+                .orderNumber(order.getOrderNumber())
+                .build();
+    }
+
+    // A wa.me Click-to-Chat link can only pre-fill plain text, never attach a
+    // file - so this is a short cover note, not the full order (that lives in
+    // a PDF the frontend prints client-side - see PrintHelperService.
+    // printPurchaseOrder() - which the admin attaches to the chat themselves
+    // before sending).
+    private String formatWhatsAppMessage(PurchaseOrder order) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("*📋 طلب شراء جديد / Purchase Order*\n\n");
+
+        Store store = order.getStore();
+        if (store != null && store.getName() != null) {
+            sb.append("*🏪 المتجر / Store:* ").append(store.getName()).append("\n");
+        }
+        sb.append("*📄 رقم الطلب / Order No:* ").append(order.getOrderNumber()).append("\n");
+        sb.append("*📅 التاريخ / Date:* ").append(order.getOrderDate()).append("\n");
+        sb.append("*💵 الإجمالي / Total:* ").append(order.getTotalAmount()).append(" EGP\n\n");
+
+        sb.append("📎 *تفاصيل الطلب كاملة في ملف PDF المرفق*\n");
+        sb.append("✅ *يرجى تأكيد الطلب في أقرب وقت*");
+
+        return sb.toString();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SendEmailResponse sendPurchaseOrderEmail(Long orderId, Long storeId) {
+        log.info("Sending purchase order email for orderId: {}, storeId: {}", orderId, storeId);
+        checkEmailEnabled(storeId);
+
+        PurchaseOrder order = orderRepository.findByIdAndStoreIdAndDeletedAtIsNull(orderId, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("PURCHASE_ORDER_NOT_FOUND", "Purchase order not found with id: " + orderId));
+
+        Supplier supplier = order.getSupplier();
+        if (supplier == null) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "PURCHASE_ORDER_NO_SUPPLIER",
+                    "No supplier assigned to this purchase order");
+        }
+
+        String email = supplier.getEmail();
+        if (email == null || email.isBlank()) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "SUPPLIER_NO_EMAIL",
+                    "Supplier has no email address on file");
+        }
+
+        String subject = "Purchase Order " + order.getOrderNumber()
+                + (order.getStore() != null ? " - " + order.getStore().getName() : "");
+        String body = formatPurchaseOrderEmailShortBody(order);
+        byte[] pdf = purchaseOrderPdfService.generatePdf(order);
+        String filename = order.getOrderNumber() + ".pdf";
+
+        emailService.sendEmailWithAttachment(email, subject, body, pdf, filename, "application/pdf");
+
+        log.info("Purchase order email sent for order: {} -> {}", order.getOrderNumber(), email);
+
+        return SendEmailResponse.builder()
+                .success(true)
+                .recipientEmail(email)
+                .message("Email sent successfully")
+                .build();
+    }
+
+    private void checkEmailEnabled(Long storeId) {
+        Boolean enabled = rawajFeatureSettingsService.getOrCreate(storeId).getEmailEnabled();
+        if (enabled != null && !enabled) {
+            throw new FeatureDisabledException("FEATURE_DISABLED_EMAIL", "Email sending is disabled for this store");
+        }
+    }
+
+    // The detailed order content now lives in the attached PDF (PurchaseOrderPdfService) -
+    // the email body is just a short cover note pointing at it, not a second copy of
+    // every line item in plain text.
+    private String formatPurchaseOrderEmailShortBody(PurchaseOrder order) {
+        Store store = order.getStore();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Dear ").append(order.getSupplier().getName()).append(",\n\n");
+        sb.append("Please find attached Purchase Order ").append(order.getOrderNumber())
+                .append(" (total: ").append(String.format("%.2f", order.getTotalAmount())).append(" EGP).\n\n");
+        sb.append("Please confirm this order at your earliest convenience.\n\n");
+
+        if (store != null) {
+            sb.append("Best regards,\n");
+            sb.append(store.getName() != null ? store.getName() : "Our Store");
+            if (store.getPhone() != null && !store.getPhone().isBlank()) {
+                sb.append("\n").append(store.getPhone());
+            }
+        } else {
+            sb.append("Best regards,\nOur Store");
+        }
+
+        return sb.toString();
+    }
+}

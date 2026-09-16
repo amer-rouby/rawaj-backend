@@ -17,8 +17,8 @@
 	<artifactId>rawaj-supermarket-backend</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
-	<name>Rawaj Supermarket Backend</name>
-	<description>Rawaj Supermarket Management System</description>
+	<name>Rawaj Tech Shop Backend</name>
+	<description>Rawaj Tech Shop Management System</description>
 
 	<modules>
 		<module>rawaj-common</module>
