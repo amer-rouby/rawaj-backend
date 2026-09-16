@@ -13,11 +13,11 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.zakisupermarket</groupId>
-	<artifactId>zaki-supermarket-backend</artifactId>
+	<groupId>com.rawajsupermarket</groupId>
+	<artifactId>rawaj-supermarket-backend</artifactId>
 	<version>1.0.0</version>
-	<name>Zaki Supermarket Backend</name>
-	<description>Zaki Supermarket Management System</description>
+	<name>Rawaj Supermarket Backend</name>
+	<description>Rawaj Supermarket Management System</description>
 
 	<properties>
 		<java.version>17</java.version>
