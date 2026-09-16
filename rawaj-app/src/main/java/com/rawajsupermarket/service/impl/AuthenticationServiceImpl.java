@@ -9,7 +9,7 @@ import com.rawajsupermarket.common.exception.AccountLockedException;
 import com.rawajsupermarket.common.exception.LocalizedException;
 import com.rawajsupermarket.common.exception.ResourceNotFoundException;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.security.JwtService;
 import com.rawajsupermarket.security.TwoFactorPendingLoginStore;
 import com.rawajsupermarket.service.AuthenticationService;

@@ -5,7 +5,7 @@ import com.rawajsupermarket.dto.response.UserResponse;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

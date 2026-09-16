@@ -14,7 +14,7 @@ import com.rawajsupermarket.common.exception.ResourceNotFoundException;
 import com.rawajsupermarket.repository.CustomerRepository;
 import com.rawajsupermarket.repository.CustomerTransactionRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

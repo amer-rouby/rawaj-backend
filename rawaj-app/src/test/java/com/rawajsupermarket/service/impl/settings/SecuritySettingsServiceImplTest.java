@@ -3,7 +3,7 @@ package com.rawajsupermarket.service.impl.settings;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.entity.settings.SecuritySettings;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.repository.settings.SecuritySettingsRepository;
 import com.rawajsupermarket.common.security.TotpService;
 import com.rawajsupermarket.service.NotificationService;

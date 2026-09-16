@@ -1,6 +1,6 @@
 package com.rawajsupermarket.service.impl;
 
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

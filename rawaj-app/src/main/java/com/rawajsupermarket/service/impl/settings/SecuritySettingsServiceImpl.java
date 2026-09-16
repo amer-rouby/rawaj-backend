@@ -6,7 +6,7 @@ import com.rawajsupermarket.dto.settings.response.TwoFactorSetupResponse;
 import com.rawajsupermarket.entity.settings.SecuritySettings;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.repository.settings.SecuritySettingsRepository;
-import com.rawajsupermarket.repository.UserRepository;
+import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.security.TotpService;
 import com.rawajsupermarket.service.NotificationService;
 import com.rawajsupermarket.service.settings.SecuritySettingsService;

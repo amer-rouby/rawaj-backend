@@ -7,7 +7,7 @@ import com.rawajsupermarket.dto.response.CustomerResponse;
 import com.rawajsupermarket.dto.response.CustomerStatementResponse;
 import com.rawajsupermarket.common.exception.FeatureDisabledException;
 import com.rawajsupermarket.service.CustomerService;
-import com.rawajsupermarket.service.settings.RawajFeatureSettingsService;
+import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
