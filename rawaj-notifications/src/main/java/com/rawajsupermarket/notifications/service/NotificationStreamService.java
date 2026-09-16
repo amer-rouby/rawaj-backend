@@ -1,6 +1,6 @@
-package com.rawajsupermarket.service;
+package com.rawajsupermarket.notifications.service;
 
-import com.rawajsupermarket.dto.response.NotificationResponse;
+import com.rawajsupermarket.notifications.dto.response.NotificationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

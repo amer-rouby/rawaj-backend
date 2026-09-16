@@ -19,7 +19,7 @@ import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.settings.repository.StoreSettingsRepository;
 import com.rawajsupermarket.customers.service.CustomerService;
-import com.rawajsupermarket.service.NotificationService;
+import com.rawajsupermarket.notifications.service.NotificationService;
 import com.rawajsupermarket.service.SaleTransactionService;
 import com.rawajsupermarket.settings.service.RawajFeatureSettingsService;
 import lombok.RequiredArgsConstructor;

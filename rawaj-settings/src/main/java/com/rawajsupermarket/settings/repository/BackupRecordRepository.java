@@ -1,7 +1,7 @@
-package com.rawajsupermarket.repository.settings;
+package com.rawajsupermarket.settings.repository;
 
 
-import com.rawajsupermarket.entity.settings.BackupRecord;
+import com.rawajsupermarket.settings.entity.BackupRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

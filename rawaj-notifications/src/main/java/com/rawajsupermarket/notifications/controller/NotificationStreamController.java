@@ -1,7 +1,7 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.notifications.controller;
 
 import com.rawajsupermarket.common.security.JwtService;
-import com.rawajsupermarket.service.NotificationStreamService;
+import com.rawajsupermarket.notifications.service.NotificationStreamService;
 import com.rawajsupermarket.auth.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

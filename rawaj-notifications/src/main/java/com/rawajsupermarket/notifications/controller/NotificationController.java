@@ -1,10 +1,10 @@
-package com.rawajsupermarket.controller;
+package com.rawajsupermarket.notifications.controller;
 
-import com.rawajsupermarket.dto.request.NotificationRequest;
+import com.rawajsupermarket.notifications.dto.request.NotificationRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.response.NotificationResponse;
+import com.rawajsupermarket.notifications.dto.response.NotificationResponse;
 import com.rawajsupermarket.common.security.JwtService;
-import com.rawajsupermarket.service.NotificationService;
+import com.rawajsupermarket.notifications.service.NotificationService;
 import com.rawajsupermarket.common.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

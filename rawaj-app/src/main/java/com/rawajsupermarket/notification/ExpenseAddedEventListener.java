@@ -1,7 +1,7 @@
 package com.rawajsupermarket.notification;
 
 import com.rawajsupermarket.expenses.event.ExpenseAddedEvent;
-import com.rawajsupermarket.service.NotificationService;
+import com.rawajsupermarket.notifications.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

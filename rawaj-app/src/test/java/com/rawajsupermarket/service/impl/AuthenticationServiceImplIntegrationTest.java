@@ -4,7 +4,7 @@ import com.rawajsupermarket.auth.dto.request.LoginRequest;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.entity.User;
 import com.rawajsupermarket.settings.entity.SecuritySettings;
-import com.rawajsupermarket.repository.NotificationRepository;
+import com.rawajsupermarket.notifications.repository.NotificationRepository;
 import com.rawajsupermarket.common.repository.StoreRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.settings.repository.SecuritySettingsRepository;

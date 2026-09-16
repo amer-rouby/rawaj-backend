@@ -1,10 +1,10 @@
-package com.rawajsupermarket.controller.settings;
+package com.rawajsupermarket.settings.controller;
 
-import com.rawajsupermarket.dto.settings.request.BackupRequest;
+import com.rawajsupermarket.settings.dto.request.BackupRequest;
 import com.rawajsupermarket.common.dto.ApiResponse;
-import com.rawajsupermarket.dto.settings.response.BackupResponse;
-import com.rawajsupermarket.auth.security.PlatformAdminAuth;
-import com.rawajsupermarket.service.settings.BackupService;
+import com.rawajsupermarket.settings.dto.response.BackupResponse;
+import com.rawajsupermarket.common.security.PlatformAdminAuth;
+import com.rawajsupermarket.settings.service.BackupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

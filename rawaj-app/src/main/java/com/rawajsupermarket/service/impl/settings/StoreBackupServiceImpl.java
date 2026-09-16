@@ -1,10 +1,10 @@
 package com.rawajsupermarket.service.impl.settings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rawajsupermarket.dto.settings.request.BackupRequest;
-import com.rawajsupermarket.dto.settings.response.BackupResponse;
+import com.rawajsupermarket.settings.dto.request.BackupRequest;
+import com.rawajsupermarket.settings.dto.response.BackupResponse;
 import com.rawajsupermarket.common.entity.Store;
-import com.rawajsupermarket.entity.settings.BackupRecord;
+import com.rawajsupermarket.settings.entity.BackupRecord;
 import com.rawajsupermarket.repository.*;
 import com.rawajsupermarket.expenses.repository.ExpenseRepository;
 import com.rawajsupermarket.payments.repository.PaymentRepository;
@@ -14,7 +14,7 @@ import com.rawajsupermarket.catalog.repository.StockBatchRepository;
 import com.rawajsupermarket.common.repository.UserRepository;
 import com.rawajsupermarket.common.entity.Store;
 import com.rawajsupermarket.common.repository.StoreRepository;
-import com.rawajsupermarket.repository.settings.BackupRecordRepository;
+import com.rawajsupermarket.settings.repository.BackupRecordRepository;
 import com.rawajsupermarket.service.settings.StoreBackupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
