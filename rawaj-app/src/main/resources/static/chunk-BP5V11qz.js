@@ -1,1 +1,0 @@
-import{Ji as vs,ft as Me}from"./chunk-BiI_Tx0v.js";function a(r,t){return e=>(console.error(`${r} failed:`,e),Me(t))}function l(r,t){return vs(a(r,t))}export{l as t};

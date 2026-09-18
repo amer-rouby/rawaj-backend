@@ -1,1 +1,0 @@
-var t=[{path:``,loadComponent:()=>import(`./chunk-BKAAY_5B2.js`).then(o=>o.CustomersComponent)}];export{t as CUSTOMERS_ROUTES};

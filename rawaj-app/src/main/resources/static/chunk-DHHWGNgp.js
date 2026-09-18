@@ -1,1 +1,0 @@
-var o=[{path:`renew`,loadComponent:()=>import(`./chunk-fKtpe0uc.js`).then(e=>e.LicenseRenewComponent)}];export{o as LICENSE_ROUTES};

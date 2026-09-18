@@ -1,1 +1,0 @@
-var r=(e=>(e.CASH=`CASH`,e.VISA=`VISA`,e.INSTAPAY=`INSTAPAY`,e.FAWRY=`FAWRY`,e.WALLET=`WALLET`,e.BANK_TRANSFER=`BANK_TRANSFER`,e.CREDIT=`CREDIT`,e))(r||{});export{r as t};
