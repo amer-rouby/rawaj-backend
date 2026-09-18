@@ -38,6 +38,7 @@ backups/
 
 ### Bundled frontend build (copied in at package time for a single-process
 ### deployment, e.g. an offline single-machine install - never source, always
-### regenerated from the frontend repo's own `ng build`) ###
-src/main/resources/static/*
-!src/main/resources/static/.gitkeep
+### regenerated from the frontend repo's own `ng build`). Path updated for
+### the multi-module split - it now lives under rawaj-app, not the repo root. ###
+rawaj-app/src/main/resources/static/*
+!rawaj-app/src/main/resources/static/.gitkeep
