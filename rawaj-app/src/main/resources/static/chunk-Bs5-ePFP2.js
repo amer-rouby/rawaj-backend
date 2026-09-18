@@ -1,1 +1,0 @@
-var e=[{path:``,loadComponent:()=>import(`./chunk-6oHu6-TH.js`).then(o=>o.ExpensesComponent)}];export{e as expensesRoutes};

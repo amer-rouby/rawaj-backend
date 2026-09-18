@@ -1,1 +1,0 @@
-var t=[{path:``,loadComponent:()=>import(`./chunk-OMSt262L.js`).then(o=>o.UsersComponent)}];export{t as USERS_ROUTES};
