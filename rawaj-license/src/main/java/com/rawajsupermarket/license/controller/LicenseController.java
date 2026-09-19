@@ -50,7 +50,7 @@ public class LicenseController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<LicenseGenerateResponse>> generate(@Valid @RequestBody LicenseGenerateRequest request) {
         log.info("POST /api/license/generate - licenseKey: {}", request.getLicenseKey());
-        LicenseGenerateResponse response = licenseService.generateCode(request.getLicenseKey(), request.getMonths());
+        LicenseGenerateResponse response = licenseService.generateCode(request.getLicenseKey(), request.getMonths(), request.getDays());
         return ResponseEntity.ok(ApiResponse.success(response, "Activation code generated"));
     }
 }

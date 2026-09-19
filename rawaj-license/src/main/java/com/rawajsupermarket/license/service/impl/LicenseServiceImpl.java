@@ -155,10 +155,14 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    public LicenseGenerateResponse generateCode(String licenseKey, int months) {
+    public LicenseGenerateResponse generateCode(String licenseKey, int months, int days) {
         if (privateKeyPath == null || privateKeyPath.isBlank()) {
             throw new LocalizedException(HttpStatus.SERVICE_UNAVAILABLE, "LICENSE_GENERATION_NOT_CONFIGURED",
                     "license.private-key-path is not set - this instance cannot generate codes");
+        }
+        if (months <= 0 && days <= 0) {
+            throw new LocalizedException(HttpStatus.BAD_REQUEST, "LICENSE_DURATION_REQUIRED",
+                    "Enter at least one month or day");
         }
 
         PrivateKey privateKey;
@@ -173,7 +177,7 @@ public class LicenseServiceImpl implements LicenseService {
             throw new IllegalStateException("Could not load license private key from " + privateKeyPath, e);
         }
 
-        Instant expiresAt = Instant.now().atZone(ZoneId.systemDefault()).plusMonths(months).toInstant();
+        Instant expiresAt = Instant.now().atZone(ZoneId.systemDefault()).plusMonths(months).plusDays(days).toInstant();
 
         String code = Jwts.builder()
                 .claim("licenseKey", licenseKey)

@@ -16,32 +16,40 @@ import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 
-// Vendor-only tool - run this locally whenever a store pays for another month,
-// NEVER deploy it (and never deploy the private key file it reads) to a
-// customer's machine. It just prints a renewal code to paste into the app's
-// "Renew subscription" screen. Plain main(), no Spring context needed:
+// Vendor-only tool - run this locally whenever a store pays for another month
+// (or to hand out a short trial), NEVER deploy it (and never deploy the
+// private key file it reads) to a customer's machine. It just prints a
+// renewal code to paste into the app's "Renew subscription" screen. Plain
+// main(), no Spring context needed:
 //
 //   mvn compile exec:java -Dexec.mainClass=com.rawajsupermarket.license.tools.LicenseCodeGenerator \
-//       -Dexec.args="E:/Backend/Projects/zaki-license-keys/license-private.pem 1 1"
+//       -Dexec.args="E:/Backend/Projects/zaki-license-keys/license-private.pem 1 1 0"
 //
-// args: <private-key-pem-path> <storeId> <months>
+// args: <private-key-pem-path> <storeId> <months> <days>
+// Either months or days may be 0 (e.g. "1 0 10" for a 10-day trial), but not
+// both.
 public final class LicenseCodeGenerator {
 
     private LicenseCodeGenerator() {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
-            System.err.println("Usage: LicenseCodeGenerator <private-key-pem-path> <storeId> <months>");
+        if (args.length != 4) {
+            System.err.println("Usage: LicenseCodeGenerator <private-key-pem-path> <storeId> <months> <days>");
             System.exit(1);
         }
 
         Path privateKeyPath = Path.of(args[0]);
         Long storeId = Long.valueOf(args[1]);
         int months = Integer.parseInt(args[2]);
+        int days = Integer.parseInt(args[3]);
+        if (months <= 0 && days <= 0) {
+            System.err.println("At least one of <months> or <days> must be positive");
+            System.exit(1);
+        }
 
         PrivateKey privateKey = loadPrivateKey(privateKeyPath);
-        Date expiresAt = Date.from(addMonths(Instant.now(), months));
+        Date expiresAt = Date.from(addDuration(Instant.now(), months, days));
 
         String code = Jwts.builder()
                 .claim("storeId", storeId)
@@ -57,8 +65,8 @@ public final class LicenseCodeGenerator {
         System.out.println(code);
     }
 
-    private static Instant addMonths(Instant now, int months) {
-        return now.atZone(ZoneId.systemDefault()).plusMonths(months).toInstant();
+    private static Instant addDuration(Instant now, int months, int days) {
+        return now.atZone(ZoneId.systemDefault()).plusMonths(months).plusDays(days).toInstant();
     }
 
     private static PrivateKey loadPrivateKey(Path pemPath) throws IOException, GeneralSecurityException {

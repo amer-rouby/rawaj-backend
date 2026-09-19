@@ -11,5 +11,5 @@ public interface LicenseService {
     // Vendor-only: signs a new activation/renewal code with the private key.
     // Only meaningful on the internal, never-shipped instance that has
     // license.private-key-path configured - see LicenseServiceImpl.
-    LicenseGenerateResponse generateCode(String licenseKey, int months);
+    LicenseGenerateResponse generateCode(String licenseKey, int months, int days);
 }
