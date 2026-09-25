@@ -33,7 +33,7 @@ public class ProductController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -56,7 +56,7 @@ public class ProductController {
     @GetMapping("/page")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<Page<ProductResponse>>> getProductsPage(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String search,
@@ -77,7 +77,7 @@ public class ProductController {
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getProductsCount(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -97,7 +97,7 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<ProductResponse>> getProduct(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -113,7 +113,7 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
     public ResponseEntity<ApiResponse<ProductResponse>> createProduct(
             @Valid @RequestBody ProductRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -131,7 +131,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -147,7 +147,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteProduct(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -162,7 +162,7 @@ public class ProductController {
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> searchProducts(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query) {
 
         storeId = SecurityUtils.getCurrentStoreId();
@@ -178,7 +178,7 @@ public class ProductController {
     @GetMapping("/low-stock")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST')")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getLowStockProducts(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 

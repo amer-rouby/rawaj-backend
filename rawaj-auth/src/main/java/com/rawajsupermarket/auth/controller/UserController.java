@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/users - storeId: {}", storeId);
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/count")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getUsersCount(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/users/count - storeId: {}", storeId);
@@ -55,7 +55,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/users/{} - storeId: {}", id, storeId);
@@ -82,7 +82,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         request.setStoreId(storeId);
 
@@ -96,7 +96,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteUser(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("DELETE /api/users/{} - storeId: {}", id, storeId);
@@ -108,7 +108,7 @@ public class UserController {
     @GetMapping("/search")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> searchUsers(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query) {
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -121,7 +121,7 @@ public class UserController {
     @GetMapping("/active")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getActiveUsers(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/users/active - storeId: {}", storeId);

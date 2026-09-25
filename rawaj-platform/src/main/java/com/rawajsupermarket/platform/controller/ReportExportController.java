@@ -35,7 +35,7 @@ public class ReportExportController {
 
     @GetMapping("/expenses/excel")
     public ResponseEntity<byte[]> exportExpensesExcel(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "100") int size
     ) {
@@ -62,7 +62,7 @@ public class ReportExportController {
 
     @GetMapping("/expenses/pdf")
     public ResponseEntity<byte[]> exportExpensesPdf(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "100") int size
     ) {
@@ -89,7 +89,7 @@ public class ReportExportController {
 
     @GetMapping("/financial/excel")
     public ResponseEntity<byte[]> exportFinancialExcel(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate
     ) {
@@ -133,7 +133,7 @@ public class ReportExportController {
 
     @GetMapping("/sales/excel")
     public ResponseEntity<byte[]> exportSalesExcel(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate
     ) {
@@ -175,7 +175,7 @@ public class ReportExportController {
     // ✅ Sales Report Export - PDF
     @GetMapping("/sales/pdf")
     public ResponseEntity<byte[]> exportSalesPdf(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate
     ) {
@@ -216,7 +216,7 @@ public class ReportExportController {
 
     // ✅ Expiry Report Export - Excel
     @GetMapping("/expiry/excel")
-    public ResponseEntity<byte[]> exportExpiryExcel(@RequestParam Long storeId) {
+    public ResponseEntity<byte[]> exportExpiryExcel(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         ExpiryReportResponse report = reportService.getExpiryReport(
                 ReportRequest.builder().storeId(storeId).build());
@@ -248,7 +248,7 @@ public class ReportExportController {
 
     // ✅ Expiry Report Export - PDF
     @GetMapping("/expiry/pdf")
-    public ResponseEntity<byte[]> exportExpiryPdf(@RequestParam Long storeId) {
+    public ResponseEntity<byte[]> exportExpiryPdf(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         ExpiryReportResponse report = reportService.getExpiryReport(
                 ReportRequest.builder().storeId(storeId).build());

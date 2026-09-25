@@ -29,7 +29,7 @@ public class NotificationController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<NotificationResponse>>> getUserNotifications(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @AuthenticationPrincipal UserDetails userDetails,
@@ -48,7 +48,7 @@ public class NotificationController {
 
     @GetMapping("/unread-count")
     public ResponseEntity<ApiResponse<Long>> getUnreadCount(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestHeader("Authorization") String authHeader) {
 
@@ -65,7 +65,7 @@ public class NotificationController {
 
     @GetMapping("/unread")
     public ResponseEntity<ApiResponse<List<NotificationResponse>>> getUnreadNotifications(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestHeader("Authorization") String authHeader) {
 
@@ -99,7 +99,7 @@ public class NotificationController {
     @PostMapping("/read-all")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Integer>> markAllAsRead(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestHeader("Authorization") String authHeader) {
 
@@ -132,7 +132,7 @@ public class NotificationController {
 
     @PostMapping("/check-alerts")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public ResponseEntity<ApiResponse<Void>> checkAndCreateAlerts(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Void>> checkAndCreateAlerts(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         notificationService.checkAndCreateLowStockAlerts(storeId);
         notificationService.checkAndCreateExpiryAlerts(storeId);

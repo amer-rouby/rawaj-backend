@@ -25,7 +25,7 @@ public class StockAlertController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<StockAlertResponse>>> getAlerts(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -41,7 +41,7 @@ public class StockAlertController {
     @GetMapping("/stats")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<AlertStatsResponse>> getAlertStats(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("Getting alert stats for store: {}", storeId);
 
@@ -55,7 +55,7 @@ public class StockAlertController {
     @GetMapping("/active")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<StockAlertResponse>>> getActiveAlerts(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("Getting active alerts for store: {}", storeId);
 
@@ -70,7 +70,7 @@ public class StockAlertController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> markAsRead(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -82,7 +82,7 @@ public class StockAlertController {
     @PostMapping("/read-all")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> markAllAsRead(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -95,7 +95,7 @@ public class StockAlertController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> resolveAlert(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -108,7 +108,7 @@ public class StockAlertController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> deleteAlert(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("Deleting alert {} for store {}", id, storeId);
         alertService.deleteAlert(id, storeId);
@@ -118,7 +118,7 @@ public class StockAlertController {
     @PostMapping("/generate/low-stock")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> generateLowStockAlerts(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("Generating low stock alerts for store {}", storeId);
         alertService.generateLowStockAlerts(storeId);
@@ -128,7 +128,7 @@ public class StockAlertController {
     @PostMapping("/generate/expiry")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Void>> generateExpiryAlerts(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("Generating expiry alerts for store {}", storeId);
         alertService.generateExpiryAlerts(storeId);

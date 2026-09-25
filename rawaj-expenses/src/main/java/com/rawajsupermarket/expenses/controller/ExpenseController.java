@@ -39,7 +39,7 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ExpenseResponse>>> getExpenses(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "expenseDate") String sortBy,
@@ -60,7 +60,7 @@ public class ExpenseController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ExpenseResponse>> getExpense(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         ExpenseResponse response = expenseService.getExpense(id, storeId);
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -70,7 +70,7 @@ public class ExpenseController {
     public ResponseEntity<ApiResponse<ExpenseResponse>> updateExpense(
             @PathVariable Long id,
             @RequestBody @Valid ExpenseRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.getCurrentUserId();
         ExpenseResponse response = expenseService.updateExpense(id, request, storeId, userId);
@@ -80,7 +80,7 @@ public class ExpenseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteExpense(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         expenseService.deleteExpense(id, storeId);
         return ResponseEntity.ok(ApiResponse.success(null, "Expense deleted successfully"));
@@ -88,7 +88,7 @@ public class ExpenseController {
 
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<Page<ExpenseResponse>>> searchExpenses(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -103,7 +103,7 @@ public class ExpenseController {
 
     @GetMapping("/category/{category}")
     public ResponseEntity<ApiResponse<Page<ExpenseResponse>>> getExpensesByCategory(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @PathVariable String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -118,7 +118,7 @@ public class ExpenseController {
 
     @GetMapping("/summary")
     public ResponseEntity<ApiResponse<ExpenseSummaryResponse>> getExpenseSummary(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate) {
 

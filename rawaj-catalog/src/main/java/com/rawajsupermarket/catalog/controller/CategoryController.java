@@ -28,7 +28,7 @@ public class CategoryController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getAllCategories(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/categories - storeId: {}", storeId);
@@ -47,7 +47,7 @@ public class CategoryController {
     @GetMapping("/page")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<Page<CategoryResponse>>> getCategoriesPage(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String search) {
@@ -63,7 +63,7 @@ public class CategoryController {
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getCategoriesCount(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/categories/count - storeId: {}", storeId);
@@ -79,7 +79,7 @@ public class CategoryController {
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<CategoryResponse>> getCategory(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/categories/{} - storeId: {}", id, storeId);
@@ -106,7 +106,7 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<CategoryResponse>> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CategoryRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         request.setStoreId(storeId);
 
@@ -120,7 +120,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("DELETE /api/categories/{} - storeId: {}", id, storeId);
@@ -132,7 +132,7 @@ public class CategoryController {
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> searchCategories(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query) {
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -145,7 +145,7 @@ public class CategoryController {
     @GetMapping("/active")
     @PreAuthorize("hasAnyRole('ADMIN', 'PHARMACIST', 'VIEWER')")
     public ResponseEntity<ApiResponse<List<CategoryResponse>>> getActiveCategories(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
 
         log.info("GET /api/categories/active - storeId: {}", storeId);
