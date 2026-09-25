@@ -27,7 +27,7 @@ public class StoreSettingsController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER', 'VIEWER')")
     public ResponseEntity<ApiResponse<StoreSettingsResponse>> getStoreSettings(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -40,7 +40,7 @@ public class StoreSettingsController {
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StoreSettingsResponse>> updateStoreSettings(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @Valid @RequestBody StoreSettingsRequest request) {
 
         storeId = SecurityUtils.getCurrentStoreId();

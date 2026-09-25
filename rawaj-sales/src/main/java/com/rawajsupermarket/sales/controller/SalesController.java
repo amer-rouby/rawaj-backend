@@ -33,7 +33,7 @@ public class SalesController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> getAllSales(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "transactionDate") String sortBy,
@@ -57,7 +57,7 @@ public class SalesController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> getSale(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/{} - storeId: {}", id, storeId);
         SaleTransactionDTO sale = saleTransactionService.getSaleById(id, storeId);
@@ -68,7 +68,7 @@ public class SalesController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> createSale(
             @Valid @RequestBody SaleRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             Authentication authentication) {
         storeId = SecurityUtils.getCurrentStoreId();
         request.setStoreId(storeId);
@@ -109,7 +109,7 @@ public class SalesController {
     public ResponseEntity<ApiResponse<SaleTransactionDTO>> updateSale(
             @PathVariable Long id,
             @Valid @RequestBody SaleRequest request,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("PUT /api/sales/{} - storeId: {}", id, storeId);
         SaleTransactionDTO response = saleTransactionService.updateSale(id, request, storeId);
@@ -120,7 +120,7 @@ public class SalesController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteSale(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("DELETE /api/sales/{} - storeId: {}", id, storeId);
         saleTransactionService.deleteSale(id, storeId);
@@ -130,7 +130,7 @@ public class SalesController {
     @GetMapping("/analytics")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<SalesReportResponse>> getSalesAnalytics(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(defaultValue = "monthly") String period) {
@@ -144,7 +144,7 @@ public class SalesController {
 
     @GetMapping("/stats")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getSalesStats(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getSalesStats(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/stats - storeId: {}", storeId);
         return ResponseEntity.ok(ApiResponse.success(
@@ -154,7 +154,7 @@ public class SalesController {
 
     @GetMapping("/today")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySales(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySales(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/today - storeId: {}", storeId);
         return ResponseEntity.ok(ApiResponse.success(
@@ -164,7 +164,7 @@ public class SalesController {
 
     @GetMapping("/today/summary")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySalesSummary(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getTodaySalesSummary(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/today/summary - storeId: {}", storeId);
         return ResponseEntity.ok(ApiResponse.success(
@@ -175,7 +175,7 @@ public class SalesController {
     @GetMapping("/range")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> getSalesByDateRange(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -190,7 +190,7 @@ public class SalesController {
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Page<SaleTransactionDTO>>> searchSales(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/search - storeId: {}, query: {}", storeId, query);
@@ -203,7 +203,7 @@ public class SalesController {
     @GetMapping("/recent")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<List<SaleTransactionDTO>>> getRecentSales(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "10") int limit) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/recent - storeId: {}, limit: {}", storeId, limit);
@@ -216,7 +216,7 @@ public class SalesController {
     @GetMapping("/by-category")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getSalesByCategory(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -231,7 +231,7 @@ public class SalesController {
     @GetMapping("/top-products")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getTopProducts(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "10") int limit) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/sales/top-products - storeId: {}, limit: {}", storeId, limit);

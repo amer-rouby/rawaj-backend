@@ -108,7 +108,7 @@ public class PaymentController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<PaymentResponse>>> getPayments(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String paymentMethod,
             @RequestParam(required = false) String search,
@@ -130,7 +130,7 @@ public class PaymentController {
     @GetMapping("/stats")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getPaymentStats(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 

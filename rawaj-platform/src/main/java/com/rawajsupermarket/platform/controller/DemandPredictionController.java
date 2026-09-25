@@ -38,7 +38,7 @@ public class DemandPredictionController {
     @PostMapping("/generate")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<Void>> generatePredictions(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate forDate,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -61,7 +61,7 @@ public class DemandPredictionController {
     @GetMapping("/upcoming")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<DemandPredictionResponse>>> getUpcomingPredictions(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "7") int daysAhead) {
         storeId = SecurityUtils.getCurrentStoreId();
         try {
@@ -78,7 +78,7 @@ public class DemandPredictionController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<DemandPredictionResponse>>> getPredictions(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -96,7 +96,7 @@ public class DemandPredictionController {
     @GetMapping("/accuracy")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getAccuracyStats(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         try {
             log.info("Getting accuracy stats for store: {}", storeId);

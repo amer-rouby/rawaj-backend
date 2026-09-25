@@ -25,7 +25,7 @@ public class DashboardController {
     @GetMapping("/stats")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER', 'MANAGER')")
     public ResponseEntity<ApiResponse<DashboardResponse>> getDashboardStats(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
