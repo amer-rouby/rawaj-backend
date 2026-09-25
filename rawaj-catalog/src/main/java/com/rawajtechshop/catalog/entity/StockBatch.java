@@ -52,11 +52,11 @@ public class StockBatch {
     @Column(name = "quantity_initial", nullable = false)
     private Integer quantityInitial;
 
-    // Nullable in this computer/mobile-shop variant - these products don't
-    // expire, unlike the supermarket branch this was forked from. Callers
-    // still get a real (far-future) date via StockBatchServiceImpl's default,
-    // never actually null in practice - kept nullable at the column level so
-    // this variant isn't forced to invent a fake expiry concept.
+    // Genuinely null in this computer/mobile-shop variant - these products
+    // don't expire, unlike the supermarket branch this was forked from.
+    // isExpired()/isExpiringWithin() below already treat null as "never
+    // expires", so expiry-based alerts and reports simply have nothing to
+    // report here instead of needing their own removal.
     @Column(name = "expiry_date")
     private LocalDate expiryDate;
 

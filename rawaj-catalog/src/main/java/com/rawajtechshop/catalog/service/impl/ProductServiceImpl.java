@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -105,17 +104,12 @@ public class ProductServiceImpl implements ProductService {
                     ? request.getBuyPrice()
                     : request.getSellPrice();
 
-            LocalDate expiryDate = request.getExpiryDate() != null
-                    ? request.getExpiryDate()
-                    : LocalDate.now().plusMonths(24);
-
             StockBatch batch = StockBatch.builder()
                     .product(product)
                     .store(store)
                     .batchNumber("BATCH-" + product.getId() + "-" + System.currentTimeMillis())
                     .quantityInitial(request.getInitialStock())
                     .quantityCurrent(request.getInitialStock())
-                    .expiryDate(expiryDate)
                     .buyPrice(effectiveBuyPrice)
                     .sellPrice(request.getSellPrice())
                     .location("Shelf-1")
