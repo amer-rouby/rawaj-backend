@@ -23,7 +23,7 @@ public class NotificationStreamController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> streamNotifications(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String token) {
 
         if (sessionService.validateSession(token) == null) {

@@ -26,7 +26,7 @@ public class RawajFeatureSettingsController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<RawajFeatureSettingsResponse>> getSettings(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -39,7 +39,7 @@ public class RawajFeatureSettingsController {
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<RawajFeatureSettingsResponse>> updateSettings(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @Valid @RequestBody RawajFeatureSettingsRequest request) {
 
         storeId = SecurityUtils.getCurrentStoreId();

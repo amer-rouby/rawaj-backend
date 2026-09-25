@@ -74,7 +74,7 @@ public class StockMovementController {
     @GetMapping("/date-range")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<StockMovementResponse>>> getMovementsByDateRange(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @RequestParam(required = false) StockMovement.MovementType movementType,
@@ -92,7 +92,7 @@ public class StockMovementController {
     @GetMapping("/stats")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<StockMovementStats>> getMovementStats(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 

@@ -36,7 +36,7 @@ public class PurchaseOrderController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<PurchaseOrderResponse>>> getAllOrders(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -48,7 +48,7 @@ public class PurchaseOrderController {
     @GetMapping("/status/{status}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<PurchaseOrderResponse>>> getOrdersByStatus(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @PathVariable String status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
@@ -62,7 +62,7 @@ public class PurchaseOrderController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> getOrder(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/purchase-orders/{} - storeId: {}", id, storeId);
         PurchaseOrderResponse order = purchaseOrderService.getOrder(id, storeId);
@@ -73,7 +73,7 @@ public class PurchaseOrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> createOrder(
             @Valid @RequestBody PurchaseOrderRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -87,7 +87,7 @@ public class PurchaseOrderController {
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> updateOrder(
             @PathVariable Long id,
             @Valid @RequestBody PurchaseOrderRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -100,7 +100,7 @@ public class PurchaseOrderController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteOrder(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -113,7 +113,7 @@ public class PurchaseOrderController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> approveOrder(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -126,7 +126,7 @@ public class PurchaseOrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> cancelOrder(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -139,7 +139,7 @@ public class PurchaseOrderController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<PurchaseOrderResponse>> receiveOrder(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -150,7 +150,7 @@ public class PurchaseOrderController {
 
     @GetMapping("/count")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<Map<String, Long>>> countOrders(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Map<String, Long>>> countOrders(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long total = purchaseOrderService.countOrders(storeId);
         Long draft = purchaseOrderService.countOrdersByStatus(storeId, "DRAFT");
@@ -171,7 +171,7 @@ public class PurchaseOrderController {
     @GetMapping("/date-range")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<PurchaseOrderResponse>>> getOrdersByDateRange(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -184,7 +184,7 @@ public class PurchaseOrderController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<WhatsAppMessageResponse>> generateWhatsAppMessage(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/purchase-orders/{}/whatsapp - storeId: {}", id, storeId);
         WhatsAppMessageResponse response = purchaseOrderService.generateWhatsAppMessage(id, storeId);
@@ -195,7 +195,7 @@ public class PurchaseOrderController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<SendWhatsAppResponse>> sendWhatsAppMessage(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("POST /api/purchase-orders/{}/send-whatsapp - storeId: {}", id, storeId);
         SendWhatsAppResponse response = purchaseOrderService.sendWhatsAppMessage(id, storeId);
@@ -206,7 +206,7 @@ public class PurchaseOrderController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<SendEmailResponse>> sendPurchaseOrderEmail(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("POST /api/purchase-orders/{}/send-email - storeId: {}", id, storeId);
         SendEmailResponse response = purchaseOrderService.sendPurchaseOrderEmail(id, storeId);
@@ -216,7 +216,7 @@ public class PurchaseOrderController {
     @GetMapping("/total-amount")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getTotalAmount(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         storeId = SecurityUtils.getCurrentStoreId();

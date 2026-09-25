@@ -33,7 +33,7 @@ public class CustomerController {
 
     @GetMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAllCustomers(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<List<CustomerResponse>>> getAllCustomers(@RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         try {
             ensureEnabled(resolvedStoreId);
@@ -46,7 +46,7 @@ public class CustomerController {
     @GetMapping("/paginated")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<CustomerResponse>>> getCustomersPaginated(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
@@ -61,7 +61,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<CustomerResponse>> getCustomer(
-            @PathVariable Long id, @RequestParam Long storeId) {
+            @PathVariable Long id, @RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         return ResponseEntity.ok(ApiResponse.success(customerService.getCustomer(id, resolvedStoreId)));
     }
@@ -69,7 +69,7 @@ public class CustomerController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
-            @Valid @RequestBody CustomerRequest request, @RequestParam Long storeId) {
+            @Valid @RequestBody CustomerRequest request, @RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         CustomerResponse customer = customerService.createCustomer(request, resolvedStoreId);
         return ResponseEntity.ok(ApiResponse.success(customer, "Customer created successfully"));
@@ -78,7 +78,7 @@ public class CustomerController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> updateCustomer(
-            @PathVariable Long id, @Valid @RequestBody CustomerRequest request, @RequestParam Long storeId) {
+            @PathVariable Long id, @Valid @RequestBody CustomerRequest request, @RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         CustomerResponse customer = customerService.updateCustomer(id, request, resolvedStoreId);
         return ResponseEntity.ok(ApiResponse.success(customer, "Customer updated successfully"));
@@ -86,7 +86,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<Void>> deleteCustomer(@PathVariable Long id, @RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Void>> deleteCustomer(@PathVariable Long id, @RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         customerService.deleteCustomer(id, resolvedStoreId);
         return ResponseEntity.ok(ApiResponse.success(null, "Customer deleted successfully"));
@@ -95,7 +95,7 @@ public class CustomerController {
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<CustomerResponse>>> searchCustomers(
-            @RequestParam Long storeId, @RequestParam String query) {
+            @RequestParam(required = false) Long storeId, @RequestParam String query) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         return ResponseEntity.ok(ApiResponse.success(customerService.searchCustomers(resolvedStoreId, query)));
     }
@@ -103,7 +103,7 @@ public class CustomerController {
     @GetMapping("/{id}/statement")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<CustomerStatementResponse>> getStatement(
-            @PathVariable Long id, @RequestParam Long storeId) {
+            @PathVariable Long id, @RequestParam(required = false) Long storeId) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         return ResponseEntity.ok(ApiResponse.success(customerService.getStatement(id, resolvedStoreId)));
     }
@@ -113,7 +113,7 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<CustomerResponse>> recordPayment(
             @PathVariable Long id,
             @Valid @RequestBody CustomerPaymentRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         Long resolvedStoreId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);

@@ -29,7 +29,7 @@ public class StockController {
     @GetMapping("/batches")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<StockBatchResponse>>> getAllBatches(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
@@ -45,7 +45,7 @@ public class StockController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<StockBatchResponse>> getBatch(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -59,7 +59,7 @@ public class StockController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<StockBatchResponse>> createBatch(
             @Valid @RequestBody StockBatchRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             Authentication authentication) {
 
         storeId = SecurityUtils.getCurrentStoreId();
@@ -77,7 +77,7 @@ public class StockController {
     public ResponseEntity<ApiResponse<StockBatchResponse>> updateBatch(
             @PathVariable Long id,
             @Valid @RequestBody StockBatchRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             Authentication authentication) {
 
         storeId = SecurityUtils.getCurrentStoreId();
@@ -93,7 +93,7 @@ public class StockController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteBatch(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             Authentication authentication) {
 
         storeId = SecurityUtils.getCurrentStoreId();
@@ -108,7 +108,7 @@ public class StockController {
     @GetMapping("/expiring")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<StockBatchResponse>>> getExpiringBatches(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "30") int days) {
 
         storeId = SecurityUtils.getCurrentStoreId();
@@ -122,7 +122,7 @@ public class StockController {
     @GetMapping("/expired")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<StockBatchResponse>>> getExpiredBatches(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 
@@ -152,7 +152,7 @@ public class StockController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<StockAdjustmentHistoryDTO>>> getAdjustmentHistory(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
 
         storeId = SecurityUtils.getCurrentStoreId();
 

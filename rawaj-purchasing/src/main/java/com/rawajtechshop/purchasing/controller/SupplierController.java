@@ -31,7 +31,7 @@ public class SupplierController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<SupplierResponse>>> getAllSuppliers(
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/suppliers - storeId: {}", storeId);
         List<SupplierResponse> suppliers = supplierService.getAllSuppliers(storeId);
@@ -41,7 +41,7 @@ public class SupplierController {
     @GetMapping("/paginated")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<Page<SupplierResponse>>> getSuppliersPaginated(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         storeId = SecurityUtils.getCurrentStoreId();
@@ -54,7 +54,7 @@ public class SupplierController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<SupplierResponse>> getSupplier(
             @PathVariable Long id,
-            @RequestParam Long storeId) {
+            @RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/suppliers/{} - storeId: {}", id, storeId);
         SupplierResponse supplier = supplierService.getSupplier(id, storeId);
@@ -65,7 +65,7 @@ public class SupplierController {
     @PreAuthorize("hasAnyRole('ADMIN', 'CASHIER')")
     public ResponseEntity<ApiResponse<SupplierResponse>> createSupplier(
             @Valid @RequestBody SupplierRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -79,7 +79,7 @@ public class SupplierController {
     public ResponseEntity<ApiResponse<SupplierResponse>> updateSupplier(
             @PathVariable Long id,
             @Valid @RequestBody SupplierRequest request,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -92,7 +92,7 @@ public class SupplierController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteSupplier(
             @PathVariable Long id,
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @AuthenticationPrincipal UserDetails userDetails) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long userId = SecurityUtils.extractUserId(userDetails);
@@ -103,7 +103,7 @@ public class SupplierController {
 
     @GetMapping("/count")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiResponse<Map<String, Long>>> countSuppliers(@RequestParam Long storeId) {
+    public ResponseEntity<ApiResponse<Map<String, Long>>> countSuppliers(@RequestParam(required = false) Long storeId) {
         storeId = SecurityUtils.getCurrentStoreId();
         Long count = supplierService.countSuppliers(storeId);
         Map<String, Long> response = new HashMap<>();
@@ -114,7 +114,7 @@ public class SupplierController {
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<List<SupplierResponse>>> searchSuppliers(
-            @RequestParam Long storeId,
+            @RequestParam(required = false) Long storeId,
             @RequestParam String query) {
         storeId = SecurityUtils.getCurrentStoreId();
         log.info("GET /api/suppliers/search - storeId: {}, query: {}", storeId, query);
